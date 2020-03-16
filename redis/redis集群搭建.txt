@@ -1,0 +1,204 @@
+﻿docker下搭建redis集群
+redis cluster方式
+
+
+docker网关ip查看
+    先使用 docker network ls 查看网络连接的方式和名字，默认以bridge方式连接
+    在使用 docker network inspect [NAME] 查看某种连接方式的网关ip，NAME是上面查到的name，默认以bridge方式连接，这里查看bridge
+
+删除所有容器
+    docker rm -f `docker ps -aq`
+
+
+1.获取redis镜像
+    docker search redis
+    docker pull docker.io/redis
+2.之后操作就是创建并启动容器,因为多台机器才能组成集群，而他们的配置类似（除了端口），所以我们使用脚本去创建
+    run的时候把配置文件和数据目录挂载出来
+3.创建配置文件模板
+    mkdir /redisclust
+    cd /redisclust  # 由于下面脚本全是相对路径，所以先进入这个目录，之后创建的配置文件都会放在这个目录下
+    vi redis-cluster.tmpl # 放在了/redisclust下
+    
+        port ${PORT}
+        masterauth 123456
+        requirepass 123456
+        cluster-enabled yes
+        cluster-config-file nodes.conf
+        cluster-node-timeout 5000
+        cluster-announce-ip 192.168.64.131
+        cluster-announce-port ${PORT}
+        cluster-announce-bus-port 1${PORT}
+        appendonly yes
+
+        (1）port （redis的端口号，如果在同一台机器启动，就设置成变量，否则都设置成6379也可以，看情况是否写死，要跟cluster-announce-port一致）
+        (2）masterauth（设置集群节点间访问密码，跟下面一致）
+        (3）requirepass（设置redis访问密码）
+        (4）cluster-enabled yes（启动集群模式，这个必须yes）
+        (5）cluster-config-file nodes.conf（集群节点信息文件）
+        (6）cluster-node-timeout 5000（redis节点宕机被发现的时间）
+        (7）cluster-announce-ip（集群节点的汇报ip，写宿主机的ip，我是放在同一台机器上，如果是不同的机器这里要写不同的ip）
+            这里详细解释一下：因为每台机器需要互相ping通，docker之间ping通可以借助宿主机的ip的挂载出去的端口去互相联系，所以这里的ip和下面的cluster-announce-port，要能保证外部可以访问到当前这个redis
+            比如我配置192.168.64.131:6379,那就要保证这个能访问到我的redis，如果我的docker之间能互通，docker ip是172.17.0.5，那我也可以写172.17.0.5:6379
+        (8）cluster-announce-port（集群节点的汇报port，防止nat，跟上面的ip组成一个访问通道，跟port一致）
+        (9）cluster-announce-bus-port（集群节点的汇报bus-port，防止nat，随便开了一个端口，在默认端口上加10000）
+        (10) appendonly yes（开启aof）
+4.创建如下脚本，自动创建配置文件
+    vi init.sh  # 放在了/redisclust下
+
+        for port in `seq 7010 7015`; do \
+        mkdir -p ./${port}/conf \
+        && PORT=${port} envsubst < ./redis-cluster.tmpl > ./${port}/conf/redis.conf \
+        && mkdir -p ./${port}/data; \
+        done
+
+        主要就是一个envsubst命令，可以自己查一下，就是把 <  > 中间的./redis-cluster.tmpl编译成  ./${port}/conf/redis.conf
+        上面 7010 7015 表示创建6台机器配置文件，端口为7010-7015，这个可以改，但rediscluster至少6台机器
+
+    执行脚本
+    chmod +x init.sh
+    ./init.sh
+    创建效果
+        .
+        ├── 7010
+        │   ├── conf
+        │   │   └── redis.conf
+        │   └── data
+        ├── 7011
+        │   ├── conf
+        │   │   └── redis.conf
+        │   └── data
+        ├── 7012
+        │   ├── conf
+        │   │   └── redis.conf
+        │   └── data
+        ├── 7013
+        │   ├── conf
+        │   │   └── redis.conf
+        │   └── data
+        ├── 7014
+        │   ├── conf
+        │   │   └── redis.conf
+        │   └── data
+        ├── 7015
+        │   ├── conf
+        │   │   └── redis.conf
+        │   └── data
+        ├── init.sh
+        └── redis-cluster.tmpl
+    这样我们就有了6台不同端口的配置文件
+    主要目的是创建配置文件，不是用这个脚本，所以如果你是多台机器分别安装redis，要组成集群，可以自己写脚本或者分别配置，因为cluster-announce-ip不同
+5.编写脚本，同时创建启动6台容器
+    vi init-container.sh  # 放在了/redisclust下
+
+        for port in `seq 7010 7015`; do \
+        docker run -d -p ${port}:${port} -p 1${port}:1${port} \
+        --privileged=true -v /redisclust/${port}/conf/:/usr/local/etc/redis/ \
+        --privileged=true -v /redisclust/${port}/data:/data \
+        --restart always --name redis-${port} f730 \
+        redis-server /usr/local/etc/redis/redis.conf; \
+        done
+
+        特殊说明
+            第2行  -p ${port}:${port} -p 1${port}:1${port}   因为我是上面配置模板中配置的每个redis 的 port都不一样（port ${PORT}），所以这里写${port}:${port}，你要是写死6379，就写${port}:6379，就是为了映射出来端口
+            第3/4行  注意-v后面的目录，要写自己的目录，挂载到相应的位置
+            第5行  f730 是redis docker镜像的 ID  docker images 查看
+            第6行  指定redis-server启动的时候的配置文件，不指定会使用默认配置，不读你的配置文件，路径是docker容器内的地址
+    
+    执行脚本
+    chmod +x init-container.sh
+    ./init-container.sh
+    查看容器
+    docker ps
+    如果发现有机器没有起来，可以查看日志docker logs 容器id
+
+6.进入任一容器
+    docker exec -it redis-7010 bash
+
+7.启动集群
+
+    redis-cli --cluster create \
+    192.168.64.131:7010 \
+    192.168.64.131:7011 \
+    192.168.64.131:7012 \
+    192.168.64.131:7013 \
+    192.168.64.131:7014 \
+    192.168.64.131:7015 \
+    --cluster-replicas 1 -a 123456
+
+    如果你没有配置集群密码，就不用-a，否则带上，跟配置文件中密码一致，中间需要输入 yes 确认
+
+    会自动分slot，和指定master-slave关系
+        Master[0] -> Slots 0 - 5460
+        Master[1] -> Slots 5461 - 10922
+        Master[2] -> Slots 10923 - 16383
+        Adding replica 192.168.64.131:7014 to 192.168.64.131:7010
+        Adding replica 192.168.64.131:7015 to 192.168.64.131:7011
+        Adding replica 192.168.64.131:7013 to 192.168.64.131:7012
+
+8.登陆集群测试
+    随意访问任一客户端
+    redis-cli -c -a 123456 -h 192.168.64.131 -p 7010
+        -c 集群方式访问
+    在里面get或者set尝试一下
+        有时候会出现
+            -> Redirected to slot [1180] located at 192.168.64.131:7015
+        然后你会发现你客户端的端口号变了，这就是redis cluster的特点，每个机器负责一小块(slot),如果发现操作的key不在当前机器会自动重定向到对应的机器上，说明集群已经搭建
+        在redis的每一个节点上，都有这么两个东西，一个是插槽（slot），它的的取值范围是：0-16383。还有一个就是cluster，可以理解为是一个集群管理的插件。当我们的存取的key到达的时候，redis会根据crc16的算法得出一个结果，然后把结果对 16384 求余数，这样每个 key 都会对应一个编号在 0-16383 之间的哈希槽，通过这个值，去找到对应的插槽所对应的节点，然后直接自动跳转到这个对应的节点上进行存取操作。
+9.集群信息
+    在redis-cli中可以使用命令
+        cluster info
+            cluster_state: ok状态表示集群可以正常接受查询请求。fail 状态表示，至少有一个哈希槽没有被绑定（说明有哈希槽没有被绑定到任意一个节点），或者在错误的状态（节点可以提供服务但是带有FAIL 标记），或者该节点无法联系到多数master节点.
+            cluster_slots_assigned: 已分配到集群节点的哈希槽数量（不是没有被绑定的数量）。16384个哈希槽全部被分配到集群节点是集群正常运行的必要条件.
+            cluster_slots_ok: 哈希槽状态不是FAIL 和 PFAIL 的数量.
+            cluster_slots_pfail: 哈希槽状态是 PFAIL的数量。只要哈希槽状态没有被升级到FAIL状态，这些哈希槽仍然可以被正常处理。PFAIL状态表示我们当前不能和节点进行交互，但这种状态只是临时的错误状态。
+            cluster_slots_fail: 哈希槽状态是FAIL的数量。如果值不是0，那么集群节点将无法提供查询服务，除非cluster-require-full-coverage被设置为no .
+            cluster_known_nodes: 集群中节点数量，包括处于握手状态还没有成为集群正式成员的节点.
+            cluster_size: 至少包含一个哈希槽且能够提供服务的master节点数量.
+            cluster_current_epoch: 集群本地Current Epoch变量的值。这个值在节点故障转移过程时有用，它总是递增和唯一的。
+            cluster_my_epoch: 当前正在使用的节点的Config Epoch值. 这个是关联在本节点的版本值.
+            cluster_stats_messages_sent: 通过node-to-node二进制总线发送的消息数量.
+            cluster_stats_messages_received: 通过node-to-node二进制总线接收的消息数量.
+
+        cluster nodes
+
+        cluster slots
+
+        检查集群状态
+        redis-cli --cluster check 192.168.64.131:7010 -a 123456
+
+10.关闭掉一台redis服务
+    redis-cli -a 123456 -c -h 192.168.64.131 -p 7010 shutdown
+    docker里可以直接在外面stop容器
+    docker stop redis-7010
+
+    可以做如下测试，关闭主节点，发现从节点顶上来，在关闭从节点，集群宕机
+    为了保证高可用，redis-cluster集群引入了主从模式，一个主节点对应一个或者多个从节点，当主节点宕机的时候，就会启用从节点。当其它主节点ping一个主节点A时，如果半数以上的主节点与A通信超时，那么认为主节点A宕机了。如果主节点A和它的从节点A1都宕机了，那么该集群就无法再提供服务了。
+
+    redis重启后，集群会自动恢复正常
+
+11.分配新的从节点
+    docker run -d -p 6379:6379 -p 16379:16379 --privileged=true -v /redisclust/other/conf/:/usr/local/etc/redis/ --privileged=true -v /redisclust/other/data:/data --restart always --name redisother f730 redis-server /usr/local/etc/redis/redis.conf
+
+    方法一（未成功）
+    在任意容器内执行以下命令：发现被添加节点知道其他节点，但其他节点不知道被添加节点，被添加节点无法自动成为master
+    redis-cli --cluster add-node 192.168.64.131:6379 192.168.64.131:7010 --cluster-slave --cluster-master-id 45b3126edbc6749048cf36e57c5fa9197daaf068 -a 123456
+
+    方法二（未成功）
+    在集群内任意redis内执行以下命令
+    cluster meet 192.18.64.131 6379
+        节点 A 会为节点 B 创建一个 clusterNode 结构， 并将该结构添加到自己的 clusterState.nodes 字典里面。
+        节点A根据CLUSTER MEET命令给定的IP地址和端口号，向节点B发送一条MEET消息。
+        节点B接收到节点A发送的MEET消息，节点B会为节点A创建一个clusterNode结构，并将该结构添加到自己的clusterState.nodes字典里面。
+        节点B向节点A返回一条PONG消息。
+        节点A将受到节点B返回的PONG消息，通过这条PONG消息节点A可以知道节点B已经成功的接收了自己发送的MEET消息。
+        之后，节点A将向节点B返回一条PING消息。
+        节点B将接收到的节点A返回的PING消息，通过这条PING消息节点B可以知道节点A已经成功的接收到了自己返回的PONG消息，握手完成。
+        之后，节点A会将节点B的信息通过Gossip协议传播给集群中的其他节点，让其他节点也与节点B进行握手，最终，经过一段时间后，节点B会被集群中的所有节点
+    在被添加节点redis内执行以下命令
+    cluster replicate [redis-mater-id]  # redis-mater-id通过cluster nodes查询
+
+    如此操作两边都能互相看到，但是被添加节点无法自动成为master
+
+
+	可能还差一个reshard 操作 不确定
