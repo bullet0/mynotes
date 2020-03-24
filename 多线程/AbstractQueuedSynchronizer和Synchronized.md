@@ -1,10 +1,17 @@
 # 锁
 
+- synchronized是在软件层面依赖JVM
+- j.u.c.Lock是在硬件层面依赖特殊的CPU指令
+
 [toc]
 
 ## 底层锁
 
 ### synchronized
+
+- 当synchronized作用在实例方法时,监视器锁（monitor）便是对象实例（this）
+- 当synchronized作用在静态方法时,监视器锁（monitor）便是对象的Class实例,因为Class数据存在于永久代,因此静态方法锁相当于该类的一个全局锁
+- 当synchronized作用在某一个对象实例时,监视器锁（monitor）便是括号括起来的对象实例
 
 #### 从对象头讲起
 
@@ -45,7 +52,7 @@
       //Space losses: 0 bytes internal + 0 bytes external = 0 bytes total
     ```
 
-  - Java对象的对象头由 mark word 和  klass pointer 两部分组成,
+  - Java对象的对象头由 mark word 和  klass pointer 两部分组成,由于数据对齐,由于虚拟机要求对象起始地址必须是8字节的整数倍.填充数据不是必须存在的,仅仅是为了字节对齐
     - mark word存储了同步状态. 标识. hashcode. GC状态等等.mark word的位长度为JVM的一个Word大小,也就是说32位JVM的Mark word为32位,64位JVM为64位
     - klass pointer存储对象的类型指针,该指针指向它的类元数据
       > 值得注意的是,如果应用的对象过多,使用64位的指针将浪费大量内存.64位的JVM比32位的JVM多耗费50%的内存.
@@ -147,8 +154,8 @@
       > 011  GC标记
 
   - 补充:epoch的含义
-    - 我们先从偏向锁的撤销讲起。当请求加锁的线程和锁对象标记字段保持的线程地址不匹配时（而且 epoch 值相等，如若不等，那么当前线程可以将该锁重偏向至自己），Java 虚拟机需要撤销该偏向锁。这个撤销过程非常麻烦，它要求持有偏向锁的线程到达安全点，再将偏向锁替换成轻量级锁；如果某一类锁对象的总撤销数超过了一个阈值（对应 jvm参数 -XX:BiasedLockingBulkRebiasThreshold，默认为 20），那么 Java 虚拟机会宣布这个类的偏向锁失效；（这里说的就是批量重偏向）
-    - 具体的做法便是在每个类中维护一个 epoch 值，你可以理解为第几代偏向锁。当设置偏向锁时，Java 虚拟机需要将该 epoch 值复制到锁对象的标记字段中；在宣布某个类的偏向锁失效时，Java 虚拟机实则将该类的 epoch 值加 1，表示之前那一代的偏向锁已经失效。而新设置的偏向锁则需要复制新的 epoch 值；为了保证当前持有偏向锁并且已加锁的线程不至于因此丢锁，Java 虚拟机需要遍历所有线程的 Java 栈，找出该类已加锁的实例，并且将它们标记字段中的 epoch 值加 1。该操作需要所有线程处于安全点状态；如果总撤销数超过另一个阈值（对应 jvm 参数 -XX:BiasedLockingBulkRevokeThreshold，默认值为 40），那么 Java 虚拟机会认为这个类已经不再适合偏向锁。此时，Java 虚拟机会撤销该类实例的偏向锁，并且在之后的加锁过程中直接为该类实例设置轻量级锁(这里说的就是偏向批量撤销)
+    - 我们先从偏向锁的撤销讲起。当请求加锁的线程和锁对象标记字段保持的线程地址不匹配时（而且 epoch 值相等,如若不等,那么当前线程可以将该锁重偏向至自己）,Java 虚拟机需要撤销该偏向锁。这个撤销过程非常麻烦,它要求持有偏向锁的线程到达安全点,再将偏向锁替换成轻量级锁如果某一类锁对象的总撤销数超过了一个阈值（对应 jvm参数 -XX:BiasedLockingBulkRebiasThreshold,默认为 20）,那么 Java 虚拟机会宣布这个类的偏向锁失效（这里说的就是批量重偏向）
+    - 具体的做法便是在每个类中维护一个 epoch 值,你可以理解为第几代偏向锁。当设置偏向锁时,Java 虚拟机需要将该 epoch 值复制到锁对象的标记字段中在宣布某个类的偏向锁失效时,Java 虚拟机实则将该类的 epoch 值加 1,表示之前那一代的偏向锁已经失效。而新设置的偏向锁则需要复制新的 epoch 值为了保证当前持有偏向锁并且已加锁的线程不至于因此丢锁,Java 虚拟机需要遍历所有线程的 Java 栈,找出该类已加锁的实例,并且将它们标记字段中的 epoch 值加 1。该操作需要所有线程处于安全点状态如果总撤销数超过另一个阈值（对应 jvm 参数 -XX:BiasedLockingBulkRevokeThreshold,默认值为 40）,那么 Java 虚拟机会认为这个类已经不再适合偏向锁。此时,Java 虚拟机会撤销该类实例的偏向锁,并且在之后的加锁过程中直接为该类实例设置轻量级锁(这里说的就是偏向批量撤销)
 
 #### 观察各种锁状态
 
@@ -397,24 +404,273 @@
         如果CAS成功,设置monitor的各个字段：_header. _owner和_object等,并返回.
     17. 如果是无锁,重置监视器值
 
+  - 源码
+
+  ```java
+    //偏向锁
+    void ObjectSynchronizer::fast_enter(Handle obj, BasicLock* lock,
+                                        bool attempt_rebias, TRAPS) {
+      if (UseBiasedLocking) { // 如果开启了偏向锁
+        if (!SafepointSynchronize::is_at_safepoint()) {
+          BiasedLocking::Condition cond = BiasedLocking::revoke_and_rebias(obj, attempt_rebias, THREAD);
+          if (cond == BiasedLocking::BIAS_REVOKED_AND_REBIASED) {
+            return;
+          }
+        } else {
+          assert(!attempt_rebias, "can not rebias toward VM thread");
+          BiasedLocking::revoke_at_safepoint(obj);
+        }
+        assert(!obj->mark()->has_bias_pattern(), "biases should be revoked by now");
+      }
+
+      slow_enter(obj, lock, THREAD);
+    }
+    //轻量级锁
+    void ObjectSynchronizer::slow_enter(Handle obj, BasicLock* lock, TRAPS) {
+      markOop mark = obj->mark();
+      assert(!mark->has_bias_pattern(), "should not see bias pattern here");
+
+      if (mark->is_neutral()) {
+        // Anticipate successful CAS -- the ST of the displaced mark must
+        // be visible <= the ST performed by the CAS.
+        lock->set_displaced_header(mark);
+        if (mark == obj()->cas_set_mark((markOop) lock, mark)) {
+          return;
+        }
+        // Fall through to inflate() ...
+      } else if (mark->has_locker() &&
+                THREAD->is_lock_owned((address)mark->locker())) {
+        assert(lock != mark->locker(), "must not re-lock the same lock");
+        assert(lock != (BasicLock*)obj->mark(), "don't relock with same BasicLock");
+        lock->set_displaced_header(NULL);
+        return;
+      }
+
+      // The object header will never be displaced to this lock,
+      // so it does not matter what the value is, except that it
+      // must be non-zero to avoid looking like a re-entrant lock,
+      // and must not look locked either.
+      lock->set_displaced_header(markOopDesc::unused_mark());
+      ObjectSynchronizer::inflate(THREAD,
+                                  obj(),
+                                  inflate_cause_monitor_enter)->enter(THREAD);
+    }
+    //锁膨胀
+    ObjectMonitor* ObjectSynchronizer::inflate(Thread * Self,
+                                                        oop object,
+                                                        const InflateCause cause) {
+      // Inflate mutates the heap ...
+      // Relaxing assertion for bug 6320749.
+      assert(Universe::verify_in_progress() ||
+            !SafepointSynchronize::is_at_safepoint(), "invariant");
+
+      EventJavaMonitorInflate event;
+
+      for (;;) {
+        const markOop mark = object->mark();
+        assert(!mark->has_bias_pattern(), "invariant");
+
+        // The mark can be in one of the following states:
+        // *  Inflated     - just return
+        // *  Stack-locked - coerce it to inflated
+        // *  INFLATING    - busy wait for conversion to complete
+        // *  Neutral      - aggressively inflate the object.
+        // *  BIASED       - Illegal.  We should never see this
+
+        // CASE: inflated
+        if (mark->has_monitor()) {
+          ObjectMonitor * inf = mark->monitor();
+          assert(inf->header()->is_neutral(), "invariant");
+          assert(oopDesc::equals((oop) inf->object(), object), "invariant");
+          assert(ObjectSynchronizer::verify_objmon_isinpool(inf), "monitor is invalid");
+          return inf;
+        }
+
+        // CASE: inflation in progress - inflating over a stack-lock.
+        // Some other thread is converting from stack-locked to inflated.
+        // Only that thread can complete inflation -- other threads must wait.
+        // The INFLATING value is transient.
+        // Currently, we spin/yield/park and poll the markword, waiting for inflation to finish.
+        // We could always eliminate polling by parking the thread on some auxiliary list.
+        if (mark == markOopDesc::INFLATING()) {
+          ReadStableMark(object);                               // 这里会调用park将线程阻塞住
+          continue;
+        }
+
+        // CASE: stack-locked
+        // Could be stack-locked either by this thread or by some other thread.
+        //
+        // Note that we allocate the objectmonitor speculatively, _before_ attempting
+        // to install INFLATING into the mark word.  We originally installed INFLATING,
+        // allocated the objectmonitor, and then finally STed the address of the
+        // objectmonitor into the mark.  This was correct, but artificially lengthened
+        // the interval in which INFLATED appeared in the mark, thus increasing
+        // the odds of inflation contention.
+        //
+        // We now use per-thread private objectmonitor free lists.
+        // These list are reprovisioned from the global free list outside the
+        // critical INFLATING...ST interval.  A thread can transfer
+        // multiple objectmonitors en-mass from the global free list to its local free list.
+        // This reduces coherency traffic and lock contention on the global free list.
+        // Using such local free lists, it doesn't matter if the omAlloc() call appears
+        // before or after the CAS(INFLATING) operation.
+        // See the comments in omAlloc().
+
+        if (mark->has_locker()) {
+          ObjectMonitor * m = omAlloc(Self);
+          // Optimistically prepare the objectmonitor - anticipate successful CAS
+          // We do this before the CAS in order to minimize the length of time
+          // in which INFLATING appears in the mark.
+          m->Recycle();
+          m->_Responsible  = NULL;
+          m->_recursions   = 0;
+          m->_SpinDuration = ObjectMonitor::Knob_SpinLimit;   // Consider: maintain by type/class
+
+          markOop cmp = object->cas_set_mark(markOopDesc::INFLATING(), mark);
+          if (cmp != mark) {
+            omRelease(Self, m, true);
+            continue;       // Interference -- just retry
+          }
+
+          // We've successfully installed INFLATING (0) into the mark-word.
+          // This is the only case where 0 will appear in a mark-word.
+          // Only the singular thread that successfully swings the mark-word
+          // to 0 can perform (or more precisely, complete) inflation.
+          //
+          // Why do we CAS a 0 into the mark-word instead of just CASing the
+          // mark-word from the stack-locked value directly to the new inflated state?
+          // Consider what happens when a thread unlocks a stack-locked object.
+          // It attempts to use CAS to swing the displaced header value from the
+          // on-stack basiclock back into the object header.  Recall also that the
+          // header value (hashcode, etc) can reside in (a) the object header, or
+          // (b) a displaced header associated with the stack-lock, or (c) a displaced
+          // header in an objectMonitor.  The inflate() routine must copy the header
+          // value from the basiclock on the owner's stack to the objectMonitor, all
+          // the while preserving the hashCode stability invariants.  If the owner
+          // decides to release the lock while the value is 0, the unlock will fail
+          // and control will eventually pass from slow_exit() to inflate.  The owner
+          // will then spin, waiting for the 0 value to disappear.   Put another way,
+          // the 0 causes the owner to stall if the owner happens to try to
+          // drop the lock (restoring the header from the basiclock to the object)
+          // while inflation is in-progress.  This protocol avoids races that might
+          // would otherwise permit hashCode values to change or "flicker" for an object.
+          // Critically, while object->mark is 0 mark->displaced_mark_helper() is stable.
+          // 0 serves as a "BUSY" inflate-in-progress indicator.
+
+
+          // fetch the displaced mark from the owner's stack.
+          // The owner can't die or unwind past the lock while our INFLATING
+          // object is in the mark.  Furthermore the owner can't complete
+          // an unlock on the object, either.
+          markOop dmw = mark->displaced_mark_helper();
+          assert(dmw->is_neutral(), "invariant");
+
+          // Setup monitor fields to proper values -- prepare the monitor
+          m->set_header(dmw);
+
+          // Optimization: if the mark->locker stack address is associated
+          // with this thread we could simply set m->_owner = Self.
+          // Note that a thread can inflate an object
+          // that it has stack-locked -- as might happen in wait() -- directly
+          // with CAS.  That is, we can avoid the xchg-NULL .... ST idiom.
+          m->set_owner(mark->locker());
+          m->set_object(object);
+          // TODO-FIXME: assert BasicLock->dhw != 0.
+
+          // Must preserve store ordering. The monitor state must
+          // be stable at the time of publishing the monitor address.
+          guarantee(object->mark() == markOopDesc::INFLATING(), "invariant");
+          object->release_set_mark(markOopDesc::encode(m));
+
+          // Hopefully the performance counters are allocated on distinct cache lines
+          // to avoid false sharing on MP systems ...
+          OM_PERFDATA_OP(Inflations, inc());
+          if (log_is_enabled(Debug, monitorinflation)) {
+            if (object->is_instance()) {
+              ResourceMark rm;
+              log_debug(monitorinflation)("Inflating object " INTPTR_FORMAT " , mark " INTPTR_FORMAT " , type %s",
+                                          p2i(object), p2i(object->mark()),
+                                          object->klass()->external_name());
+            }
+          }
+          if (event.should_commit()) {
+            post_monitor_inflate_event(&event, object, cause);
+          }
+          return m;
+        }
+
+        // CASE: neutral
+        // TODO-FIXME: for entry we currently inflate and then try to CAS _owner.
+        // If we know we're inflating for entry it's better to inflate by swinging a
+        // pre-locked objectMonitor pointer into the object header.   A successful
+        // CAS inflates the object *and* confers ownership to the inflating thread.
+        // In the current implementation we use a 2-step mechanism where we CAS()
+        // to inflate and then CAS() again to try to swing _owner from NULL to Self.
+        // An inflateTry() method that we could call from fast_enter() and slow_enter()
+        // would be useful.
+
+        assert(mark->is_neutral(), "invariant");
+        ObjectMonitor * m = omAlloc(Self);
+        // prepare m for installation - set monitor to initial state
+        m->Recycle();
+        m->set_header(mark);
+        m->set_owner(NULL);
+        m->set_object(object);
+        m->_recursions   = 0;
+        m->_Responsible  = NULL;
+        m->_SpinDuration = ObjectMonitor::Knob_SpinLimit;       // consider: keep metastats by type/class
+
+        if (object->cas_set_mark(markOopDesc::encode(m), mark) != mark) {
+          m->set_object(NULL);
+          m->set_owner(NULL);
+          m->Recycle();
+          omRelease(Self, m, true);
+          m = NULL;
+          continue;
+          // interference - the markword changed - just retry.
+          // The state-transitions are one-way, so there's no chance of
+          // live-lock -- "Inflated" is an absorbing state.
+        }
+
+        // Hopefully the performance counters are allocated on distinct
+        // cache lines to avoid false sharing on MP systems ...
+        OM_PERFDATA_OP(Inflations, inc());
+        if (log_is_enabled(Debug, monitorinflation)) {
+          if (object->is_instance()) {
+            ResourceMark rm;
+            log_debug(monitorinflation)("Inflating object " INTPTR_FORMAT " , mark " INTPTR_FORMAT " , type %s",
+                                        p2i(object), p2i(object->mark()),
+                                        object->klass()->external_name());
+          }
+        }
+        if (event.should_commit()) {
+          post_monitor_inflate_event(&event, object, cause);
+        }
+        return m;
+      }
+    }
+
+
+  ```
+
 #### 偏向锁
 
-- 偏向锁是指一段同步代码一直被一个线程所访问，那么该线程会自动获取锁，降低获取锁的代价。
-- 在大多数情况下，锁总是由同一线程多次获得，不存在多线程竞争，所以出现了偏向锁。其目标就是在**只有一个线程执行同步代码块**时能够提高性能。
-- 当一个线程访问同步代码块并获取锁时，会在Mark Word里存储锁偏向的线程ID。在线程进入和退出同步块时不再通过CAS操作来加锁和解锁，而是检测Mark Word里是否存储着指向当前线程的偏向锁。引入偏向锁是为了在无多线程竞争的情况下尽量减少不必要的轻量级锁执行路径，**因为轻量级锁的获取及释放依赖多次CAS原子指令，而偏向锁只需要在置换ThreadID的时候依赖一次CAS原子指令即可**。
-- 偏向锁只有遇到其他线程尝试竞争偏向锁时，持有偏向锁的线程才会释放锁，线程不会主动释放偏向锁。偏向锁的撤销，需要等待全局安全点（在这个时间点上没有字节码正在执行），它会首先暂停拥有偏向锁的线程，判断锁对象是否处于被锁定状态。撤销偏向锁后恢复到无锁（标志位为“01”）或轻量级锁（标志位为“00”）的状态。
-- 偏向锁在JDK 6及以后的JVM里是默认启用的。可以通过JVM参数关闭偏向锁：-XX:-UseBiasedLocking=false，关闭之后程序默认会进入轻量级锁状态。
+- 偏向锁是指一段同步代码一直被一个线程所访问,那么该线程会自动获取锁,降低获取锁的代价。
+- 在大多数情况下,锁总是由同一线程多次获得,不存在多线程竞争,所以出现了偏向锁。其目标就是在**只有一个线程执行同步代码块**时能够提高性能。
+- 当一个线程访问同步代码块并获取锁时,会在Mark Word里存储锁偏向的线程ID。在线程进入和退出同步块时不再通过CAS操作来加锁和解锁,而是检测Mark Word里是否存储着指向当前线程的偏向锁。引入偏向锁是为了在无多线程竞争的情况下尽量减少不必要的轻量级锁执行路径,**因为轻量级锁的获取及释放依赖多次CAS原子指令,而偏向锁只需要在置换ThreadID的时候依赖一次CAS原子指令即可**。
+- 偏向锁只有遇到其他线程尝试竞争偏向锁时,持有偏向锁的线程才会释放锁,线程不会主动释放偏向锁。偏向锁的撤销,需要等待全局安全点（在这个时间点上没有字节码正在执行）,它会首先暂停拥有偏向锁的线程,判断锁对象是否处于被锁定状态。撤销偏向锁后恢复到无锁（标志位为“01”）或轻量级锁（标志位为“00”）的状态。
+- 偏向锁在JDK 6及以后的JVM里是默认启用的。可以通过JVM参数关闭偏向锁：-XX:-UseBiasedLocking=false,关闭之后程序默认会进入轻量级锁状态。
 
 - 偏向锁升级为轻量级锁逻辑
   > 线程1持有偏向锁,线程2来竞争锁对象;
   > 判断当前对象头是否是偏向锁;
   > 判断拥有偏向锁的线程1是否还存在;
   > 线程1不存在,直接设置偏向锁标识为0(线程1执行完毕后,不会主动去释放偏向锁);
-  > 使用cas替换偏向锁线程ID为线程2,锁不升级，仍为偏向锁;
-  > 线程1仍然存在,暂停线程1；
+  > 使用cas替换偏向锁线程ID为线程2,锁不升级,仍为偏向锁;
+  > 线程1仍然存在,暂停线程1
   > 设置锁标志位为00(变为轻量级锁),偏向锁为0;
   > 从线程1的空闲monitor record中读取一条,放至线程1的当前monitor record中;
-  > 更新mark word，将mark word指向线程1中monitor record的指针;
+  > 更新mark word,将mark word指向线程1中monitor record的指针;
   > 继续执行线程1的代码;
   > 锁升级为轻量级锁;
   > 线程2自旋来获取锁对象;
@@ -636,28 +892,28 @@
   ```
 
   > 上面的偏向锁认真看的话,会发现t1 t2,所拿到的锁的标志都是同样的 `533293061`,原因
-  > 当分配一个对象并且这个对象能够执行偏向的时候并且还没有偏向时，会执行CAS是的当前线程ID放入到mark word的线程ID区域。
-  > 如果成功，对象本身就会被偏向到当前线程,当前线程会成为偏向所有者,即线程ID直接指向JVM内部表示的线程
-  > 如果CAS失败了，即另一个线程已经成为偏向的所有者，这意味着这个线程的偏向必须撤销。对象的状态会变成轻量锁的模式，为了达到这一点，尝试把对象偏向于自己的线程必须能
-  > 够操作偏向所有者的栈，为此需要全局安全点已经触达（没有线程在执行字节码）。此时偏向拥有者会像轻量级锁操作那样，它的堆栈会填入锁记录，然后对象本身的mark word会
-  > 被更新成指向栈上最老的锁记录，然后线程本身在安全点的阻塞会被释放
-  > 下一个获取锁的操作会与检测对象的mark word,如果对象是可偏向的，并且偏向的所有者是当前那线程，会没有任何额外操作而立马获取锁。这个时候偏向锁的持有者的栈不会初始化锁记录，因为对象偏向的时候，是永远不会检验锁记录的
-  > unlock的时候，会测试mark word的状态，看是否仍然有偏向模式。如果有，就不会再做其它的测试，甚至不需要管线程ID是不是当前线程ID
-  > 这里通过解释器的保证monitorexit操作只会在当前线程执行，所以这也是一个不需要检查的理由
+  > 当分配一个对象并且这个对象能够执行偏向的时候并且还没有偏向时,会执行CAS是的当前线程ID放入到mark word的线程ID区域。
+  > 如果成功,对象本身就会被偏向到当前线程,当前线程会成为偏向所有者,即线程ID直接指向JVM内部表示的线程
+  > 如果CAS失败了,即另一个线程已经成为偏向的所有者,这意味着这个线程的偏向必须撤销。对象的状态会变成轻量锁的模式,为了达到这一点,尝试把对象偏向于自己的线程必须能
+  > 够操作偏向所有者的栈,为此需要全局安全点已经触达（没有线程在执行字节码）。此时偏向拥有者会像轻量级锁操作那样,它的堆栈会填入锁记录,然后对象本身的mark word会
+  > 被更新成指向栈上最老的锁记录,然后线程本身在安全点的阻塞会被释放
+  > 下一个获取锁的操作会与检测对象的mark word,如果对象是可偏向的,并且偏向的所有者是当前那线程,会没有任何额外操作而立马获取锁。这个时候偏向锁的持有者的栈不会初始化锁记录,因为对象偏向的时候,是永远不会检验锁记录的
+  > unlock的时候,会测试mark word的状态,看是否仍然有偏向模式。如果有,就不会再做其它的测试,甚至不需要管线程ID是不是当前线程ID
+  > 这里通过解释器的保证monitorexit操作只会在当前线程执行,所以这也是一个不需要检查的理由
   > 所以两个线程看到的锁是一个
   > 参考 ![偏向锁状态转移原理](https://juejin.im/post/5c17964df265da6157056588)
 
 #### 轻量级锁
 
-- 当锁是偏向锁的时候，被另外的线程所访问，偏向锁就会升级为轻量级锁，其他线程会通过自旋的形式尝试获取锁，不会阻塞，从而提高性能。
-- 在代码进入同步块的时候，如果同步对象锁状态为无锁状态（锁标志位为“01”状态，是否为偏向锁为“0”），虚拟机首先将在当前线程的栈帧中建立一个名为锁记录（Lock Record）的空间，用于存储锁对象目前的Mark Word的拷贝，然后拷贝对象头中的Mark Word复制到锁记录中。
-- 拷贝成功后，虚拟机将使用CAS操作尝试将对象的Mark Word更新为指向Lock Record的指针，并将Lock Record里的owner指针指向对象的Mark Word。
-- 如果这个更新动作成功了，那么这个线程就拥有了该对象的锁，并且对象Mark Word的锁标志位设置为“00”，表示此对象处于轻量级锁定状态。
-- 如果轻量级锁的更新操作失败了，虚拟机首先会检查对象的Mark Word是否指向当前线程的栈帧，如果是就说明当前线程已经拥有了这个对象的锁，那就可以直接进入同步块继续执行，否则说明多个线程竞争锁。
-- 若当前只有一个等待线程，则该线程通过自旋进行等待。但是当自旋超过一定的次数，或者一个线程在持有锁，一个在自旋，又有第三个来访时，轻量级锁升级为重量级锁。
-- 多个线程在不同的时间段请求同一把锁，也就是说没有锁竞争。针对这种情形，Java 虚拟机采用了轻量级锁，来避免重量级锁的阻塞以及唤醒
-- 在没有锁竞争的前提下，减少传统锁使用OS互斥量产生的性能损耗
-- 在竞争激烈时，轻量级锁会多做很多额外操作，导致性能下降
+- 当锁是偏向锁的时候,被另外的线程所访问,偏向锁就会升级为轻量级锁,其他线程会通过自旋的形式尝试获取锁,不会阻塞,从而提高性能。
+- 在代码进入同步块的时候,如果同步对象锁状态为无锁状态（锁标志位为“01”状态,是否为偏向锁为“0”）,虚拟机首先将在当前线程的栈帧中建立一个名为锁记录（Lock Record）的空间,用于存储锁对象目前的Mark Word的拷贝,然后拷贝对象头中的Mark Word复制到锁记录中。
+- 拷贝成功后,虚拟机将使用CAS操作尝试将对象的Mark Word更新为指向Lock Record的指针,并将Lock Record里的owner指针指向对象的Mark Word。
+- 如果这个更新动作成功了,那么这个线程就拥有了该对象的锁,并且对象Mark Word的锁标志位设置为“00”,表示此对象处于轻量级锁定状态。
+- 如果轻量级锁的更新操作失败了,虚拟机首先会检查对象的Mark Word是否指向当前线程的栈帧,如果是就说明当前线程已经拥有了这个对象的锁,那就可以直接进入同步块继续执行,否则说明多个线程竞争锁。
+- 若当前只有一个等待线程,则该线程通过自旋进行等待。但是当自旋超过一定的次数,或者一个线程在持有锁,一个在自旋,又有第三个来访时,轻量级锁升级为重量级锁。
+- 多个线程在不同的时间段请求同一把锁,也就是说没有锁竞争。针对这种情形,Java 虚拟机采用了轻量级锁,来避免重量级锁的阻塞以及唤醒
+- 在没有锁竞争的前提下,减少传统锁使用OS互斥量产生的性能损耗
+- 在竞争激烈时,轻量级锁会多做很多额外操作,导致性能下降
 - 可以认为两个线程交替执行的情况下请求同一把锁
 
 #### 重量级锁
@@ -745,18 +1001,18 @@
 
 - 一共有无锁,偏向锁,轻量级锁,重量级锁四个锁状态,另外一个是GC标志
 - 无锁(001):对象没有进行中的同步
-- 偏向锁:当前有且仅有一条线程在操作这个对象,为了提高性能,标记一下持有锁的线程,方便重入即可,CAS一次即可
-- 轻量级锁:当前有两个线程在争抢同一把锁,需要将锁置成轻量级锁(00),同时没有抢到的线程就自旋等待,其中涉及到多次CAS操作
-- 重量级锁:当前2条以上线程在抢同一把锁,这时JVM认为竞争严重,将锁提升为重量级锁,没有获取到执行权的线程会被挂起,获取到执行权的线程释放锁的时候需要唤醒其他线程,性能较低,故AQS诞生了
-- 锁降级:锁降级1.6之后确实是会发生的，当 JVM 进入安全点（SafePoint）的时候，会检查是否有闲置的 Monitor，然后试图进行降级
+- 偏向锁:当前有且仅有一条线程在操作这个对象,为了提高性能,标记一下持有锁的线程,方便重入即可,CAS一次即可(而偏向锁只需要在置换ThreadID的时候依赖一次CAS原子指令)
+- 轻量级锁:当前有两个线程在争抢同一把锁(侧重于交替执行),需要将锁置成轻量级锁(00),同时没有抢到的线程就自旋等待,其中涉及到多次CAS操作(轻量级锁的加锁解锁操作是需要依赖多次CAS原子指令的)
+- 重量级锁:当前2条及其以上线程在抢同一把锁,这时JVM认为竞争严重,将锁提升为重量级锁,没有获取到执行权的线程会被挂起,获取到执行权的线程释放锁的时候需要唤醒其他线程,性能较低,故AQS诞生了
+- 锁降级:锁降级1.6之后确实是会发生的,当 JVM 进入安全点（SafePoint）的时候,会检查是否有闲置的 Monitor,然后试图进行降级
   > 有兴趣的大佬可以在 https://hg.openjdk.java.net/jdk/jdk/file/896e80158d35/src/hotspot/share/runtime/synchronizer.cpp 链接中
-  > 研究一下deflate_idle_monitors是分析锁降级逻辑的入口，这部分行为还在进行持续改进，因为其逻辑是在安全点内运行，处理不当可能拖长 JVM 停顿（STW，stop-the-world）的时间。
+  > 研究一下deflate_idle_monitors是分析锁降级逻辑的入口,这部分行为还在进行持续改进,因为其逻辑是在安全点内运行,处理不当可能拖长 JVM 停顿（STW,stop-the-world）的时间。
 
 #### wait 和 notify
 
-- 准备进入sync方法的线程,会在 _EntryList中等待
+- 准备进入sync方法的线程,会被封装为ObjectWaiter对象,会在 _EntryList 中等待
 - 如果获取到了执行权,就将当前线程转移到_owner
-- 如果在_owner中,调用了wait方法,则会将当前线程放入wait set,同时释放锁
+- 如果在_owner中,调用了wait方法,则会将当前线程放入wait set,同时释放锁,owner变量恢复为null，count自减1
 - wait
   - 会将当前线程放入对象的wait set 休息室
 - notify

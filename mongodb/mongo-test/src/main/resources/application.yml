@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+#      database: test
+#      host: 47.95.203.21
+#      port: 27017
+      uri: mongodb://47.95.203.21:27020,47.95.203.21:27019/test?\
+            slaveOk=true&replicaSet=mycluster&connect=replicaSet&readPreference=secondaryPreferred&connectTimeoutMS=300000
+
+      epositories:
+        enabled: true
+#      username:
+#      password:
+logging:
+  level:
+    org.springframework.data.mongodb.core: DEBUG
