@@ -2,17 +2,12 @@ package com.example.mongotest.service;
 
 import com.example.mongotest.dao.CommentRepository;
 import com.example.mongotest.entity.Comment;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.MapReduceCommand;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.AggregationSpELExpression;
 import org.springframework.data.mongodb.core.mapreduce.MapReduceOptions;
 import org.springframework.data.mongodb.core.mapreduce.MapReduceResults;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -22,9 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
-import java.beans.Transient;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -130,5 +125,8 @@ public class CommentService {
                 MapReduceOptions.options().outputCollection("aaa"),HashMap.class);
         System.out.println(aaa.iterator().next());
         return null;
+    }
+    public void customerGroupByList2(){
+        List<Map<String,Object>> map = commentRepository.groupById();
     }
 }

@@ -103,4 +103,9 @@ public class CommentServiceTest {
     public void customerMapReduceList() {
         commentService.customerMapReduceList();
     }
+
+    @Test
+    public void customerGroupByList2() {
+        commentService.customerGroupByList2();
+    }
 }
