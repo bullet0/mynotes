@@ -8,7 +8,9 @@
   1. 多个线程同时调用put方法时(2个线程的key发生hash碰撞),正好当前table[i]指向的对象为null,那么thread1和thread2同时会新建一个Entry对象方到指定位置,这样,先放上去的数据会丢失 (createEntry方法导致)
   2. 多个线程同时调用put方法时(2个线程的key发生hash碰撞),当前table[i]已经指向了一条链表了(这两链表中没有当前线程所要插入的key),跑的快得会将头节点换成自己的Entry,而慢的刚好拿到了刚才的头结点组成的链表,又把自己追加上去了,形成了类似 A'->A->B->C 的链表 (createEntry方法导致)
   3. 由于使用头插法(这种方法在替换的过程中逻辑比较简单,直接将原链表追到自己后面,将自己设置到数组中即可),使用这种简单的操作会使的 A->B->C 链表在resize的过程中逆序为 C->B->A ,谁后插入谁是头.这种逻辑下,如果两个线程同时做扩容操作,就可能同时进入transfer方法,然后走到 `Entry<K,V> next = e.next;` 这句,同时获取到 e->A ,e.next->B,然后thread1率先跑完2圈逻辑,将A追加到了新table上,同时将B也追加到了新table上,新table : B->A ,然后thread2开始将A往新table上放,先是将 B->A 链表放到自己尾部,然后让自己替换掉新table的头结点,形成了 A->B->A 环形链表 (resize#transfer方法导致死循环)
+
 - modCount用于记录HashMap的修改次数,在HashMap的put(),get(),remove(),Interator()等方法中,都使用了该属性由于HashMap不是线程安全的,所以在迭代的时候,会将modCount赋值到迭代器的expectedModCount属性中,然后进行迭代,如果在迭代的过程中HashMap被其他线程修改了,modCount的数值就会发生变化,这个时候expectedModCount和ModCount不相等,迭代器就会抛出ConcurrentModificationException()异常
+
 > 这里补充一点,put(),get(),remove()都会自增这个值,所以集合在遍历的时候,不能调用集合对象自己的删除方法,因为自己的删除方法改了值,但是遍历时并不知道,如果想要删除,可以调用迭代器的删除,因为迭代器的删除方法在删除的时候会同步一下这个值,保证不出错,所以应该是 it.remove() , 而不是 list.remove(obj)
 
 - 构造器
