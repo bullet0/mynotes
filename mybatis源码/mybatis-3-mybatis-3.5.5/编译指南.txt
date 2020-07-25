@@ -1,0 +1,21 @@
+注释掉pom文件中的pdf插件,一直报错
+<!-- <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pdf-plugin</artifactId>
+      </plugin> -->
+
+执行maven命令  "-Dmaven.test.skip=true" 不编译test不执行test
+"-Dskiptest=true" 编译test,但是不执行test
+"-Denforcer.skip=true"  跳过enforcer插件的检查
+mvn clean package "-Dmaven.test.skip=true" "-Denforcer.skip=true"
+
+
+源码中自带了mysql驱动,不过是test环境下才能用,自己修改pom文件中的作用域即可
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.20</version>
+    </dependency>
+
+自己的测试代码在 src/main/java/mytest 包下

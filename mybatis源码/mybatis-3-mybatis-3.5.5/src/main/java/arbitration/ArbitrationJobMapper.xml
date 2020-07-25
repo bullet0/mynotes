@@ -1,0 +1,1914 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="arbitration.ArbitrationJobMapper" >
+  <resultMap id="BaseResultMap" type="arbitration.ArbitrationJob" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="begin_day" property="beginDay" jdbcType="VARCHAR" />
+    <result column="begin_month" property="beginMonth" jdbcType="VARCHAR" />
+    <result column="begin_year" property="beginYear" jdbcType="VARCHAR" />
+    <result column="borrow_term_unit" property="borrowTermUnit" jdbcType="VARCHAR" />
+    <result column="borrow_terms" property="borrowTerms" jdbcType="VARCHAR" />
+    <result column="borrow_uri" property="borrowUri" jdbcType="VARCHAR" />
+    <result column="borrower_name" property="borrowerName" jdbcType="VARCHAR" />
+    <result column="contract_date" property="contractDate" jdbcType="VARCHAR" />
+    <result column="contract_money" property="contractMoney" jdbcType="VARCHAR" />
+    <result column="contract_no" property="contractNo" jdbcType="VARCHAR" />
+    <result column="debt_notice_uri" property="debtNoticeUri" jdbcType="VARCHAR" />
+    <result column="end_day" property="endDay" jdbcType="VARCHAR" />
+    <result column="end_month" property="endMonth" jdbcType="VARCHAR" />
+    <result column="end_year" property="endYear" jdbcType="VARCHAR" />
+    <result column="field1" property="field1" jdbcType="VARCHAR" />
+    <result column="field10" property="field10" jdbcType="VARCHAR" />
+    <result column="field11" property="field11" jdbcType="VARCHAR" />
+    <result column="field12" property="field12" jdbcType="VARCHAR" />
+    <result column="field13" property="field13" jdbcType="VARCHAR" />
+    <result column="field14" property="field14" jdbcType="VARCHAR" />
+    <result column="field15" property="field15" jdbcType="VARCHAR" />
+    <result column="field16" property="field16" jdbcType="VARCHAR" />
+    <result column="field17" property="field17" jdbcType="VARCHAR" />
+    <result column="field19" property="field19" jdbcType="VARCHAR" />
+    <result column="field2" property="field2" jdbcType="VARCHAR" />
+    <result column="field20" property="field20" jdbcType="VARCHAR" />
+    <result column="field23" property="field23" jdbcType="VARCHAR" />
+    <result column="field24" property="field24" jdbcType="VARCHAR" />
+    <result column="field26" property="field26" jdbcType="VARCHAR" />
+    <result column="field27" property="field27" jdbcType="VARCHAR" />
+    <result column="field28" property="field28" jdbcType="VARCHAR" />
+    <result column="field29" property="field29" jdbcType="VARCHAR" />
+    <result column="field3" property="field3" jdbcType="VARCHAR" />
+    <result column="field30" property="field30" jdbcType="VARCHAR" />
+    <result column="field31" property="field31" jdbcType="VARCHAR" />
+    <result column="field32" property="field32" jdbcType="VARCHAR" />
+    <result column="field33" property="field33" jdbcType="VARCHAR" />
+    <result column="field34" property="field34" jdbcType="VARCHAR" />
+    <result column="field35" property="field35" jdbcType="VARCHAR" />
+    <result column="field36" property="field36" jdbcType="VARCHAR" />
+    <result column="field4" property="field4" jdbcType="VARCHAR" />
+    <result column="field5" property="field5" jdbcType="VARCHAR" />
+    <result column="field6" property="field6" jdbcType="VARCHAR" />
+    <result column="field7" property="field7" jdbcType="VARCHAR" />
+    <result column="field8" property="field8" jdbcType="VARCHAR" />
+    <result column="field9" property="field9" jdbcType="VARCHAR" />
+    <result column="id_card_type" property="idCardType" jdbcType="VARCHAR" />
+    <result column="id_no_uri" property="idNoUri" jdbcType="VARCHAR" />
+    <result column="idno" property="idno" jdbcType="VARCHAR" />
+    <result column="job_status" property="jobStatus" jdbcType="VARCHAR" />
+    <result column="job_step" property="jobStep" jdbcType="INTEGER" />
+    <result column="loan_uri" property="loanUri" jdbcType="VARCHAR" />
+    <result column="mobiles" property="mobiles" jdbcType="VARCHAR" />
+    <result column="overdue_date" property="overdueDate" jdbcType="VARCHAR" />
+    <result column="overdue_date_unit" property="overdueDateUnit" jdbcType="VARCHAR" />
+    <result column="overdue_dates" property="overdueDates" jdbcType="VARCHAR" />
+    <result column="payment_date" property="paymentDate" jdbcType="VARCHAR" />
+    <result column="permanent_address" property="permanentAddress" jdbcType="VARCHAR" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+    <result column="service_uri" property="serviceUri" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="swap_debt_uri" property="swapDebtUri" jdbcType="VARCHAR" />
+    <result column="total_periods" property="totalPeriods" jdbcType="VARCHAR" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="contacts" property="contacts" jdbcType="VARCHAR" />
+    <result column="emails" property="emails" jdbcType="VARCHAR" />
+    <result column="identity_no" property="identityNo" jdbcType="VARCHAR" />
+    <result column="identity_type" property="identityType" jdbcType="VARCHAR" />
+    <result column="legal_represent" property="legalRepresent" jdbcType="VARCHAR" />
+    <result column="post" property="post" jdbcType="VARCHAR" />
+    <result column="id_card_pdf_uri" property="idCardPdfUri" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="repay_num" property="repayNum" jdbcType="VARCHAR" />
+    <result column="field37" property="field37" jdbcType="VARCHAR" />
+    <result column="loan_money" property="loanMoney" jdbcType="VARCHAR" />
+    <result column="msg" property="msg" jdbcType="VARCHAR" />
+    <result column="notice_date" property="noticeDate" jdbcType="VARCHAR" />
+    <result column="apply_no" property="applyNo" jdbcType="VARCHAR" />
+    <result column="sended" property="sended" jdbcType="VARCHAR" />
+    <result column="existence" property="existence" jdbcType="VARCHAR" />
+    <result column="sended2" property="sended2" jdbcType="TINYINT" />
+    <result column="arbitration_msg_url" property="arbitrationMsgUrl" jdbcType="VARCHAR" />
+    <result column="arbitration_send_date" property="arbitrationSendDate" jdbcType="DATE" />
+    <result column="debtmsg_send_date" property="debtmsgSendDate" jdbcType="DATE" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="arbitration.ArbitrationJobWithBLOBs" extends="BaseResultMap" >
+    <result column="field18" property="field18" jdbcType="LONGVARCHAR" />
+    <result column="field21" property="field21" jdbcType="LONGVARCHAR" />
+    <result column="field22" property="field22" jdbcType="LONGVARCHAR" />
+    <result column="field25" property="field25" jdbcType="LONGVARCHAR" />
+    <result column="invests_code" property="investsCode" jdbcType="LONGVARCHAR" />
+    <result column="invests_money" property="investsMoney" jdbcType="LONGVARCHAR" />
+    <result column="arbitration_msg" property="arbitrationMsg" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, create_by, create_date, del_flag, remark, update_by, update_date, begin_day,
+    begin_month, begin_year, borrow_term_unit, borrow_terms, borrow_uri, borrower_name,
+    contract_date, contract_money, contract_no, debt_notice_uri, end_day, end_month,
+    end_year, field1, field10, field11, field12, field13, field14, field15, field16,
+    field17, field19, field2, field20, field23, field24, field26, field27, field28, field29,
+    field3, field30, field31, field32, field33, field34, field35, field36, field4, field5,
+    field6, field7, field8, field9, id_card_type, id_no_uri, idno, job_status, job_step,
+    loan_uri, mobiles, overdue_date, overdue_date_unit, overdue_dates, payment_date,
+    permanent_address, product_code, service_uri, sex, swap_debt_uri, total_periods,
+    task_id, address, contacts, emails, identity_no, identity_type, legal_represent,
+    post, id_card_pdf_uri, number, repay_num, field37, loan_money, msg, notice_date,
+    apply_no, sended, existence, sended2, arbitration_msg_url, arbitration_send_date,
+    debtmsg_send_date
+  </sql>
+  <sql id="Blob_Column_List" >
+    field18, field21, field22, field25, invests_code, invests_money, arbitration_msg
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="arbitration.ArbitrationJobExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from arbitration_job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="arbitration.ArbitrationJobExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from arbitration_job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    limit ${curpage},${pagesize}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from arbitration_job
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from arbitration_job
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="arbitration.ArbitrationJobExample" >
+    delete from arbitration_job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="arbitration.ArbitrationJobWithBLOBs" >
+    insert into arbitration_job (id, create_by, create_date,
+      del_flag, remark, update_by,
+      update_date, begin_day, begin_month,
+      begin_year, borrow_term_unit, borrow_terms,
+      borrow_uri, borrower_name, contract_date,
+      contract_money, contract_no, debt_notice_uri,
+      end_day, end_month, end_year,
+      field1, field10, field11,
+      field12, field13, field14,
+      field15, field16, field17,
+      field19, field2, field20,
+      field23, field24, field26,
+      field27, field28, field29,
+      field3, field30, field31,
+      field32, field33, field34,
+      field35, field36, field4,
+      field5, field6, field7,
+      field8, field9, id_card_type,
+      id_no_uri, idno, job_status,
+      job_step, loan_uri, mobiles,
+      overdue_date, overdue_date_unit, overdue_dates,
+      payment_date, permanent_address, product_code,
+      service_uri, sex, swap_debt_uri,
+      total_periods, task_id, address,
+      contacts, emails, identity_no,
+      identity_type, legal_represent, post,
+      id_card_pdf_uri, number, repay_num,
+      field37, loan_money, msg,
+      notice_date, apply_no, sended,
+      existence, sended2, arbitration_msg_url,
+      arbitration_send_date, debtmsg_send_date, field18,
+      field21, field22, field25,
+      invests_code, invests_money, arbitration_msg
+      )
+    values (#{id,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+      #{delFlag,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR},
+      #{updateDate,jdbcType=TIMESTAMP}, #{beginDay,jdbcType=VARCHAR}, #{beginMonth,jdbcType=VARCHAR},
+      #{beginYear,jdbcType=VARCHAR}, #{borrowTermUnit,jdbcType=VARCHAR}, #{borrowTerms,jdbcType=VARCHAR},
+      #{borrowUri,jdbcType=VARCHAR}, #{borrowerName,jdbcType=VARCHAR}, #{contractDate,jdbcType=VARCHAR},
+      #{contractMoney,jdbcType=VARCHAR}, #{contractNo,jdbcType=VARCHAR}, #{debtNoticeUri,jdbcType=VARCHAR},
+      #{endDay,jdbcType=VARCHAR}, #{endMonth,jdbcType=VARCHAR}, #{endYear,jdbcType=VARCHAR},
+      #{field1,jdbcType=VARCHAR}, #{field10,jdbcType=VARCHAR}, #{field11,jdbcType=VARCHAR},
+      #{field12,jdbcType=VARCHAR}, #{field13,jdbcType=VARCHAR}, #{field14,jdbcType=VARCHAR},
+      #{field15,jdbcType=VARCHAR}, #{field16,jdbcType=VARCHAR}, #{field17,jdbcType=VARCHAR},
+      #{field19,jdbcType=VARCHAR}, #{field2,jdbcType=VARCHAR}, #{field20,jdbcType=VARCHAR},
+      #{field23,jdbcType=VARCHAR}, #{field24,jdbcType=VARCHAR}, #{field26,jdbcType=VARCHAR},
+      #{field27,jdbcType=VARCHAR}, #{field28,jdbcType=VARCHAR}, #{field29,jdbcType=VARCHAR},
+      #{field3,jdbcType=VARCHAR}, #{field30,jdbcType=VARCHAR}, #{field31,jdbcType=VARCHAR},
+      #{field32,jdbcType=VARCHAR}, #{field33,jdbcType=VARCHAR}, #{field34,jdbcType=VARCHAR},
+      #{field35,jdbcType=VARCHAR}, #{field36,jdbcType=VARCHAR}, #{field4,jdbcType=VARCHAR},
+      #{field5,jdbcType=VARCHAR}, #{field6,jdbcType=VARCHAR}, #{field7,jdbcType=VARCHAR},
+      #{field8,jdbcType=VARCHAR}, #{field9,jdbcType=VARCHAR}, #{idCardType,jdbcType=VARCHAR},
+      #{idNoUri,jdbcType=VARCHAR}, #{idno,jdbcType=VARCHAR}, #{jobStatus,jdbcType=VARCHAR},
+      #{jobStep,jdbcType=INTEGER}, #{loanUri,jdbcType=VARCHAR}, #{mobiles,jdbcType=VARCHAR},
+      #{overdueDate,jdbcType=VARCHAR}, #{overdueDateUnit,jdbcType=VARCHAR}, #{overdueDates,jdbcType=VARCHAR},
+      #{paymentDate,jdbcType=VARCHAR}, #{permanentAddress,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR},
+      #{serviceUri,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{swapDebtUri,jdbcType=VARCHAR},
+      #{totalPeriods,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+      #{contacts,jdbcType=VARCHAR}, #{emails,jdbcType=VARCHAR}, #{identityNo,jdbcType=VARCHAR},
+      #{identityType,jdbcType=VARCHAR}, #{legalRepresent,jdbcType=VARCHAR}, #{post,jdbcType=VARCHAR},
+      #{idCardPdfUri,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{repayNum,jdbcType=VARCHAR},
+      #{field37,jdbcType=VARCHAR}, #{loanMoney,jdbcType=VARCHAR}, #{msg,jdbcType=VARCHAR},
+      #{noticeDate,jdbcType=VARCHAR}, #{applyNo,jdbcType=VARCHAR}, #{sended,jdbcType=VARCHAR},
+      #{existence,jdbcType=VARCHAR}, #{sended2,jdbcType=TINYINT}, #{arbitrationMsgUrl,jdbcType=VARCHAR},
+      #{arbitrationSendDate,jdbcType=DATE}, #{debtmsgSendDate,jdbcType=DATE}, #{field18,jdbcType=LONGVARCHAR},
+      #{field21,jdbcType=LONGVARCHAR}, #{field22,jdbcType=LONGVARCHAR}, #{field25,jdbcType=LONGVARCHAR},
+      #{investsCode,jdbcType=LONGVARCHAR}, #{investsMoney,jdbcType=LONGVARCHAR}, #{arbitrationMsg,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="arbitration.ArbitrationJobWithBLOBs" >
+    insert into arbitration_job
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="beginDay != null" >
+        begin_day,
+      </if>
+      <if test="beginMonth != null" >
+        begin_month,
+      </if>
+      <if test="beginYear != null" >
+        begin_year,
+      </if>
+      <if test="borrowTermUnit != null" >
+        borrow_term_unit,
+      </if>
+      <if test="borrowTerms != null" >
+        borrow_terms,
+      </if>
+      <if test="borrowUri != null" >
+        borrow_uri,
+      </if>
+      <if test="borrowerName != null" >
+        borrower_name,
+      </if>
+      <if test="contractDate != null" >
+        contract_date,
+      </if>
+      <if test="contractMoney != null" >
+        contract_money,
+      </if>
+      <if test="contractNo != null" >
+        contract_no,
+      </if>
+      <if test="debtNoticeUri != null" >
+        debt_notice_uri,
+      </if>
+      <if test="endDay != null" >
+        end_day,
+      </if>
+      <if test="endMonth != null" >
+        end_month,
+      </if>
+      <if test="endYear != null" >
+        end_year,
+      </if>
+      <if test="field1 != null" >
+        field1,
+      </if>
+      <if test="field10 != null" >
+        field10,
+      </if>
+      <if test="field11 != null" >
+        field11,
+      </if>
+      <if test="field12 != null" >
+        field12,
+      </if>
+      <if test="field13 != null" >
+        field13,
+      </if>
+      <if test="field14 != null" >
+        field14,
+      </if>
+      <if test="field15 != null" >
+        field15,
+      </if>
+      <if test="field16 != null" >
+        field16,
+      </if>
+      <if test="field17 != null" >
+        field17,
+      </if>
+      <if test="field19 != null" >
+        field19,
+      </if>
+      <if test="field2 != null" >
+        field2,
+      </if>
+      <if test="field20 != null" >
+        field20,
+      </if>
+      <if test="field23 != null" >
+        field23,
+      </if>
+      <if test="field24 != null" >
+        field24,
+      </if>
+      <if test="field26 != null" >
+        field26,
+      </if>
+      <if test="field27 != null" >
+        field27,
+      </if>
+      <if test="field28 != null" >
+        field28,
+      </if>
+      <if test="field29 != null" >
+        field29,
+      </if>
+      <if test="field3 != null" >
+        field3,
+      </if>
+      <if test="field30 != null" >
+        field30,
+      </if>
+      <if test="field31 != null" >
+        field31,
+      </if>
+      <if test="field32 != null" >
+        field32,
+      </if>
+      <if test="field33 != null" >
+        field33,
+      </if>
+      <if test="field34 != null" >
+        field34,
+      </if>
+      <if test="field35 != null" >
+        field35,
+      </if>
+      <if test="field36 != null" >
+        field36,
+      </if>
+      <if test="field4 != null" >
+        field4,
+      </if>
+      <if test="field5 != null" >
+        field5,
+      </if>
+      <if test="field6 != null" >
+        field6,
+      </if>
+      <if test="field7 != null" >
+        field7,
+      </if>
+      <if test="field8 != null" >
+        field8,
+      </if>
+      <if test="field9 != null" >
+        field9,
+      </if>
+      <if test="idCardType != null" >
+        id_card_type,
+      </if>
+      <if test="idNoUri != null" >
+        id_no_uri,
+      </if>
+      <if test="idno != null" >
+        idno,
+      </if>
+      <if test="jobStatus != null" >
+        job_status,
+      </if>
+      <if test="jobStep != null" >
+        job_step,
+      </if>
+      <if test="loanUri != null" >
+        loan_uri,
+      </if>
+      <if test="mobiles != null" >
+        mobiles,
+      </if>
+      <if test="overdueDate != null" >
+        overdue_date,
+      </if>
+      <if test="overdueDateUnit != null" >
+        overdue_date_unit,
+      </if>
+      <if test="overdueDates != null" >
+        overdue_dates,
+      </if>
+      <if test="paymentDate != null" >
+        payment_date,
+      </if>
+      <if test="permanentAddress != null" >
+        permanent_address,
+      </if>
+      <if test="productCode != null" >
+        product_code,
+      </if>
+      <if test="serviceUri != null" >
+        service_uri,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="swapDebtUri != null" >
+        swap_debt_uri,
+      </if>
+      <if test="totalPeriods != null" >
+        total_periods,
+      </if>
+      <if test="taskId != null" >
+        task_id,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="contacts != null" >
+        contacts,
+      </if>
+      <if test="emails != null" >
+        emails,
+      </if>
+      <if test="identityNo != null" >
+        identity_no,
+      </if>
+      <if test="identityType != null" >
+        identity_type,
+      </if>
+      <if test="legalRepresent != null" >
+        legal_represent,
+      </if>
+      <if test="post != null" >
+        post,
+      </if>
+      <if test="idCardPdfUri != null" >
+        id_card_pdf_uri,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="repayNum != null" >
+        repay_num,
+      </if>
+      <if test="field37 != null" >
+        field37,
+      </if>
+      <if test="loanMoney != null" >
+        loan_money,
+      </if>
+      <if test="msg != null" >
+        msg,
+      </if>
+      <if test="noticeDate != null" >
+        notice_date,
+      </if>
+      <if test="applyNo != null" >
+        apply_no,
+      </if>
+      <if test="sended != null" >
+        sended,
+      </if>
+      <if test="existence != null" >
+        existence,
+      </if>
+      <if test="sended2 != null" >
+        sended2,
+      </if>
+      <if test="arbitrationMsgUrl != null" >
+        arbitration_msg_url,
+      </if>
+      <if test="arbitrationSendDate != null" >
+        arbitration_send_date,
+      </if>
+      <if test="debtmsgSendDate != null" >
+        debtmsg_send_date,
+      </if>
+      <if test="field18 != null" >
+        field18,
+      </if>
+      <if test="field21 != null" >
+        field21,
+      </if>
+      <if test="field22 != null" >
+        field22,
+      </if>
+      <if test="field25 != null" >
+        field25,
+      </if>
+      <if test="investsCode != null" >
+        invests_code,
+      </if>
+      <if test="investsMoney != null" >
+        invests_money,
+      </if>
+      <if test="arbitrationMsg != null" >
+        arbitration_msg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="beginDay != null" >
+        #{beginDay,jdbcType=VARCHAR},
+      </if>
+      <if test="beginMonth != null" >
+        #{beginMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="beginYear != null" >
+        #{beginYear,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowTermUnit != null" >
+        #{borrowTermUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowTerms != null" >
+        #{borrowTerms,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowUri != null" >
+        #{borrowUri,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerName != null" >
+        #{borrowerName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractDate != null" >
+        #{contractDate,jdbcType=VARCHAR},
+      </if>
+      <if test="contractMoney != null" >
+        #{contractMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="contractNo != null" >
+        #{contractNo,jdbcType=VARCHAR},
+      </if>
+      <if test="debtNoticeUri != null" >
+        #{debtNoticeUri,jdbcType=VARCHAR},
+      </if>
+      <if test="endDay != null" >
+        #{endDay,jdbcType=VARCHAR},
+      </if>
+      <if test="endMonth != null" >
+        #{endMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="endYear != null" >
+        #{endYear,jdbcType=VARCHAR},
+      </if>
+      <if test="field1 != null" >
+        #{field1,jdbcType=VARCHAR},
+      </if>
+      <if test="field10 != null" >
+        #{field10,jdbcType=VARCHAR},
+      </if>
+      <if test="field11 != null" >
+        #{field11,jdbcType=VARCHAR},
+      </if>
+      <if test="field12 != null" >
+        #{field12,jdbcType=VARCHAR},
+      </if>
+      <if test="field13 != null" >
+        #{field13,jdbcType=VARCHAR},
+      </if>
+      <if test="field14 != null" >
+        #{field14,jdbcType=VARCHAR},
+      </if>
+      <if test="field15 != null" >
+        #{field15,jdbcType=VARCHAR},
+      </if>
+      <if test="field16 != null" >
+        #{field16,jdbcType=VARCHAR},
+      </if>
+      <if test="field17 != null" >
+        #{field17,jdbcType=VARCHAR},
+      </if>
+      <if test="field19 != null" >
+        #{field19,jdbcType=VARCHAR},
+      </if>
+      <if test="field2 != null" >
+        #{field2,jdbcType=VARCHAR},
+      </if>
+      <if test="field20 != null" >
+        #{field20,jdbcType=VARCHAR},
+      </if>
+      <if test="field23 != null" >
+        #{field23,jdbcType=VARCHAR},
+      </if>
+      <if test="field24 != null" >
+        #{field24,jdbcType=VARCHAR},
+      </if>
+      <if test="field26 != null" >
+        #{field26,jdbcType=VARCHAR},
+      </if>
+      <if test="field27 != null" >
+        #{field27,jdbcType=VARCHAR},
+      </if>
+      <if test="field28 != null" >
+        #{field28,jdbcType=VARCHAR},
+      </if>
+      <if test="field29 != null" >
+        #{field29,jdbcType=VARCHAR},
+      </if>
+      <if test="field3 != null" >
+        #{field3,jdbcType=VARCHAR},
+      </if>
+      <if test="field30 != null" >
+        #{field30,jdbcType=VARCHAR},
+      </if>
+      <if test="field31 != null" >
+        #{field31,jdbcType=VARCHAR},
+      </if>
+      <if test="field32 != null" >
+        #{field32,jdbcType=VARCHAR},
+      </if>
+      <if test="field33 != null" >
+        #{field33,jdbcType=VARCHAR},
+      </if>
+      <if test="field34 != null" >
+        #{field34,jdbcType=VARCHAR},
+      </if>
+      <if test="field35 != null" >
+        #{field35,jdbcType=VARCHAR},
+      </if>
+      <if test="field36 != null" >
+        #{field36,jdbcType=VARCHAR},
+      </if>
+      <if test="field4 != null" >
+        #{field4,jdbcType=VARCHAR},
+      </if>
+      <if test="field5 != null" >
+        #{field5,jdbcType=VARCHAR},
+      </if>
+      <if test="field6 != null" >
+        #{field6,jdbcType=VARCHAR},
+      </if>
+      <if test="field7 != null" >
+        #{field7,jdbcType=VARCHAR},
+      </if>
+      <if test="field8 != null" >
+        #{field8,jdbcType=VARCHAR},
+      </if>
+      <if test="field9 != null" >
+        #{field9,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardType != null" >
+        #{idCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="idNoUri != null" >
+        #{idNoUri,jdbcType=VARCHAR},
+      </if>
+      <if test="idno != null" >
+        #{idno,jdbcType=VARCHAR},
+      </if>
+      <if test="jobStatus != null" >
+        #{jobStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="jobStep != null" >
+        #{jobStep,jdbcType=INTEGER},
+      </if>
+      <if test="loanUri != null" >
+        #{loanUri,jdbcType=VARCHAR},
+      </if>
+      <if test="mobiles != null" >
+        #{mobiles,jdbcType=VARCHAR},
+      </if>
+      <if test="overdueDate != null" >
+        #{overdueDate,jdbcType=VARCHAR},
+      </if>
+      <if test="overdueDateUnit != null" >
+        #{overdueDateUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="overdueDates != null" >
+        #{overdueDates,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentDate != null" >
+        #{paymentDate,jdbcType=VARCHAR},
+      </if>
+      <if test="permanentAddress != null" >
+        #{permanentAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceUri != null" >
+        #{serviceUri,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="swapDebtUri != null" >
+        #{swapDebtUri,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPeriods != null" >
+        #{totalPeriods,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null" >
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts != null" >
+        #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="emails != null" >
+        #{emails,jdbcType=VARCHAR},
+      </if>
+      <if test="identityNo != null" >
+        #{identityNo,jdbcType=VARCHAR},
+      </if>
+      <if test="identityType != null" >
+        #{identityType,jdbcType=VARCHAR},
+      </if>
+      <if test="legalRepresent != null" >
+        #{legalRepresent,jdbcType=VARCHAR},
+      </if>
+      <if test="post != null" >
+        #{post,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardPdfUri != null" >
+        #{idCardPdfUri,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="repayNum != null" >
+        #{repayNum,jdbcType=VARCHAR},
+      </if>
+      <if test="field37 != null" >
+        #{field37,jdbcType=VARCHAR},
+      </if>
+      <if test="loanMoney != null" >
+        #{loanMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="msg != null" >
+        #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeDate != null" >
+        #{noticeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="applyNo != null" >
+        #{applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sended != null" >
+        #{sended,jdbcType=VARCHAR},
+      </if>
+      <if test="existence != null" >
+        #{existence,jdbcType=VARCHAR},
+      </if>
+      <if test="sended2 != null" >
+        #{sended2,jdbcType=TINYINT},
+      </if>
+      <if test="arbitrationMsgUrl != null" >
+        #{arbitrationMsgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="arbitrationSendDate != null" >
+        #{arbitrationSendDate,jdbcType=DATE},
+      </if>
+      <if test="debtmsgSendDate != null" >
+        #{debtmsgSendDate,jdbcType=DATE},
+      </if>
+      <if test="field18 != null" >
+        #{field18,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="field21 != null" >
+        #{field21,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="field22 != null" >
+        #{field22,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="field25 != null" >
+        #{field25,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="investsCode != null" >
+        #{investsCode,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="investsMoney != null" >
+        #{investsMoney,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="arbitrationMsg != null" >
+        #{arbitrationMsg,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="arbitration.ArbitrationJobExample" resultType="java.lang.Integer" >
+    select count(*) from arbitration_job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update arbitration_job
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.beginDay != null" >
+        begin_day = #{record.beginDay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginMonth != null" >
+        begin_month = #{record.beginMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginYear != null" >
+        begin_year = #{record.beginYear,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowTermUnit != null" >
+        borrow_term_unit = #{record.borrowTermUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowTerms != null" >
+        borrow_terms = #{record.borrowTerms,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowUri != null" >
+        borrow_uri = #{record.borrowUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowerName != null" >
+        borrower_name = #{record.borrowerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractDate != null" >
+        contract_date = #{record.contractDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractMoney != null" >
+        contract_money = #{record.contractMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractNo != null" >
+        contract_no = #{record.contractNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.debtNoticeUri != null" >
+        debt_notice_uri = #{record.debtNoticeUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endDay != null" >
+        end_day = #{record.endDay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endMonth != null" >
+        end_month = #{record.endMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endYear != null" >
+        end_year = #{record.endYear,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field1 != null" >
+        field1 = #{record.field1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field10 != null" >
+        field10 = #{record.field10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field11 != null" >
+        field11 = #{record.field11,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field12 != null" >
+        field12 = #{record.field12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field13 != null" >
+        field13 = #{record.field13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field14 != null" >
+        field14 = #{record.field14,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field15 != null" >
+        field15 = #{record.field15,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field16 != null" >
+        field16 = #{record.field16,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field17 != null" >
+        field17 = #{record.field17,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field19 != null" >
+        field19 = #{record.field19,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field2 != null" >
+        field2 = #{record.field2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field20 != null" >
+        field20 = #{record.field20,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field23 != null" >
+        field23 = #{record.field23,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field24 != null" >
+        field24 = #{record.field24,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field26 != null" >
+        field26 = #{record.field26,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field27 != null" >
+        field27 = #{record.field27,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field28 != null" >
+        field28 = #{record.field28,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field29 != null" >
+        field29 = #{record.field29,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field3 != null" >
+        field3 = #{record.field3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field30 != null" >
+        field30 = #{record.field30,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field31 != null" >
+        field31 = #{record.field31,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field32 != null" >
+        field32 = #{record.field32,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field33 != null" >
+        field33 = #{record.field33,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field34 != null" >
+        field34 = #{record.field34,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field35 != null" >
+        field35 = #{record.field35,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field36 != null" >
+        field36 = #{record.field36,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field4 != null" >
+        field4 = #{record.field4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field5 != null" >
+        field5 = #{record.field5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field6 != null" >
+        field6 = #{record.field6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field7 != null" >
+        field7 = #{record.field7,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field8 != null" >
+        field8 = #{record.field8,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field9 != null" >
+        field9 = #{record.field9,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCardType != null" >
+        id_card_type = #{record.idCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idNoUri != null" >
+        id_no_uri = #{record.idNoUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idno != null" >
+        idno = #{record.idno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobStatus != null" >
+        job_status = #{record.jobStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobStep != null" >
+        job_step = #{record.jobStep,jdbcType=INTEGER},
+      </if>
+      <if test="record.loanUri != null" >
+        loan_uri = #{record.loanUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobiles != null" >
+        mobiles = #{record.mobiles,jdbcType=VARCHAR},
+      </if>
+      <if test="record.overdueDate != null" >
+        overdue_date = #{record.overdueDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.overdueDateUnit != null" >
+        overdue_date_unit = #{record.overdueDateUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.overdueDates != null" >
+        overdue_dates = #{record.overdueDates,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymentDate != null" >
+        payment_date = #{record.paymentDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.permanentAddress != null" >
+        permanent_address = #{record.permanentAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCode != null" >
+        product_code = #{record.productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceUri != null" >
+        service_uri = #{record.serviceUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.swapDebtUri != null" >
+        swap_debt_uri = #{record.swapDebtUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalPeriods != null" >
+        total_periods = #{record.totalPeriods,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskId != null" >
+        task_id = #{record.taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contacts != null" >
+        contacts = #{record.contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="record.emails != null" >
+        emails = #{record.emails,jdbcType=VARCHAR},
+      </if>
+      <if test="record.identityNo != null" >
+        identity_no = #{record.identityNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.identityType != null" >
+        identity_type = #{record.identityType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.legalRepresent != null" >
+        legal_represent = #{record.legalRepresent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.post != null" >
+        post = #{record.post,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCardPdfUri != null" >
+        id_card_pdf_uri = #{record.idCardPdfUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=VARCHAR},
+      </if>
+      <if test="record.repayNum != null" >
+        repay_num = #{record.repayNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field37 != null" >
+        field37 = #{record.field37,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loanMoney != null" >
+        loan_money = #{record.loanMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msg != null" >
+        msg = #{record.msg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.noticeDate != null" >
+        notice_date = #{record.noticeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applyNo != null" >
+        apply_no = #{record.applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sended != null" >
+        sended = #{record.sended,jdbcType=VARCHAR},
+      </if>
+      <if test="record.existence != null" >
+        existence = #{record.existence,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sended2 != null" >
+        sended2 = #{record.sended2,jdbcType=TINYINT},
+      </if>
+      <if test="record.arbitrationMsgUrl != null" >
+        arbitration_msg_url = #{record.arbitrationMsgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.arbitrationSendDate != null" >
+        arbitration_send_date = #{record.arbitrationSendDate,jdbcType=DATE},
+      </if>
+      <if test="record.debtmsgSendDate != null" >
+        debtmsg_send_date = #{record.debtmsgSendDate,jdbcType=DATE},
+      </if>
+      <if test="record.field18 != null" >
+        field18 = #{record.field18,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.field21 != null" >
+        field21 = #{record.field21,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.field22 != null" >
+        field22 = #{record.field22,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.field25 != null" >
+        field25 = #{record.field25,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.investsCode != null" >
+        invests_code = #{record.investsCode,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.investsMoney != null" >
+        invests_money = #{record.investsMoney,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.arbitrationMsg != null" >
+        arbitration_msg = #{record.arbitrationMsg,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update arbitration_job
+    set id = #{record.id,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      update_by = #{record.updateBy,jdbcType=VARCHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      begin_day = #{record.beginDay,jdbcType=VARCHAR},
+      begin_month = #{record.beginMonth,jdbcType=VARCHAR},
+      begin_year = #{record.beginYear,jdbcType=VARCHAR},
+      borrow_term_unit = #{record.borrowTermUnit,jdbcType=VARCHAR},
+      borrow_terms = #{record.borrowTerms,jdbcType=VARCHAR},
+      borrow_uri = #{record.borrowUri,jdbcType=VARCHAR},
+      borrower_name = #{record.borrowerName,jdbcType=VARCHAR},
+      contract_date = #{record.contractDate,jdbcType=VARCHAR},
+      contract_money = #{record.contractMoney,jdbcType=VARCHAR},
+      contract_no = #{record.contractNo,jdbcType=VARCHAR},
+      debt_notice_uri = #{record.debtNoticeUri,jdbcType=VARCHAR},
+      end_day = #{record.endDay,jdbcType=VARCHAR},
+      end_month = #{record.endMonth,jdbcType=VARCHAR},
+      end_year = #{record.endYear,jdbcType=VARCHAR},
+      field1 = #{record.field1,jdbcType=VARCHAR},
+      field10 = #{record.field10,jdbcType=VARCHAR},
+      field11 = #{record.field11,jdbcType=VARCHAR},
+      field12 = #{record.field12,jdbcType=VARCHAR},
+      field13 = #{record.field13,jdbcType=VARCHAR},
+      field14 = #{record.field14,jdbcType=VARCHAR},
+      field15 = #{record.field15,jdbcType=VARCHAR},
+      field16 = #{record.field16,jdbcType=VARCHAR},
+      field17 = #{record.field17,jdbcType=VARCHAR},
+      field19 = #{record.field19,jdbcType=VARCHAR},
+      field2 = #{record.field2,jdbcType=VARCHAR},
+      field20 = #{record.field20,jdbcType=VARCHAR},
+      field23 = #{record.field23,jdbcType=VARCHAR},
+      field24 = #{record.field24,jdbcType=VARCHAR},
+      field26 = #{record.field26,jdbcType=VARCHAR},
+      field27 = #{record.field27,jdbcType=VARCHAR},
+      field28 = #{record.field28,jdbcType=VARCHAR},
+      field29 = #{record.field29,jdbcType=VARCHAR},
+      field3 = #{record.field3,jdbcType=VARCHAR},
+      field30 = #{record.field30,jdbcType=VARCHAR},
+      field31 = #{record.field31,jdbcType=VARCHAR},
+      field32 = #{record.field32,jdbcType=VARCHAR},
+      field33 = #{record.field33,jdbcType=VARCHAR},
+      field34 = #{record.field34,jdbcType=VARCHAR},
+      field35 = #{record.field35,jdbcType=VARCHAR},
+      field36 = #{record.field36,jdbcType=VARCHAR},
+      field4 = #{record.field4,jdbcType=VARCHAR},
+      field5 = #{record.field5,jdbcType=VARCHAR},
+      field6 = #{record.field6,jdbcType=VARCHAR},
+      field7 = #{record.field7,jdbcType=VARCHAR},
+      field8 = #{record.field8,jdbcType=VARCHAR},
+      field9 = #{record.field9,jdbcType=VARCHAR},
+      id_card_type = #{record.idCardType,jdbcType=VARCHAR},
+      id_no_uri = #{record.idNoUri,jdbcType=VARCHAR},
+      idno = #{record.idno,jdbcType=VARCHAR},
+      job_status = #{record.jobStatus,jdbcType=VARCHAR},
+      job_step = #{record.jobStep,jdbcType=INTEGER},
+      loan_uri = #{record.loanUri,jdbcType=VARCHAR},
+      mobiles = #{record.mobiles,jdbcType=VARCHAR},
+      overdue_date = #{record.overdueDate,jdbcType=VARCHAR},
+      overdue_date_unit = #{record.overdueDateUnit,jdbcType=VARCHAR},
+      overdue_dates = #{record.overdueDates,jdbcType=VARCHAR},
+      payment_date = #{record.paymentDate,jdbcType=VARCHAR},
+      permanent_address = #{record.permanentAddress,jdbcType=VARCHAR},
+      product_code = #{record.productCode,jdbcType=VARCHAR},
+      service_uri = #{record.serviceUri,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=VARCHAR},
+      swap_debt_uri = #{record.swapDebtUri,jdbcType=VARCHAR},
+      total_periods = #{record.totalPeriods,jdbcType=VARCHAR},
+      task_id = #{record.taskId,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      contacts = #{record.contacts,jdbcType=VARCHAR},
+      emails = #{record.emails,jdbcType=VARCHAR},
+      identity_no = #{record.identityNo,jdbcType=VARCHAR},
+      identity_type = #{record.identityType,jdbcType=VARCHAR},
+      legal_represent = #{record.legalRepresent,jdbcType=VARCHAR},
+      post = #{record.post,jdbcType=VARCHAR},
+      id_card_pdf_uri = #{record.idCardPdfUri,jdbcType=VARCHAR},
+      number = #{record.number,jdbcType=VARCHAR},
+      repay_num = #{record.repayNum,jdbcType=VARCHAR},
+      field37 = #{record.field37,jdbcType=VARCHAR},
+      loan_money = #{record.loanMoney,jdbcType=VARCHAR},
+      msg = #{record.msg,jdbcType=VARCHAR},
+      notice_date = #{record.noticeDate,jdbcType=VARCHAR},
+      apply_no = #{record.applyNo,jdbcType=VARCHAR},
+      sended = #{record.sended,jdbcType=VARCHAR},
+      existence = #{record.existence,jdbcType=VARCHAR},
+      sended2 = #{record.sended2,jdbcType=TINYINT},
+      arbitration_msg_url = #{record.arbitrationMsgUrl,jdbcType=VARCHAR},
+      arbitration_send_date = #{record.arbitrationSendDate,jdbcType=DATE},
+      debtmsg_send_date = #{record.debtmsgSendDate,jdbcType=DATE},
+      field18 = #{record.field18,jdbcType=LONGVARCHAR},
+      field21 = #{record.field21,jdbcType=LONGVARCHAR},
+      field22 = #{record.field22,jdbcType=LONGVARCHAR},
+      field25 = #{record.field25,jdbcType=LONGVARCHAR},
+      invests_code = #{record.investsCode,jdbcType=LONGVARCHAR},
+      invests_money = #{record.investsMoney,jdbcType=LONGVARCHAR},
+      arbitration_msg = #{record.arbitrationMsg,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update arbitration_job
+    set id = #{record.id,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      update_by = #{record.updateBy,jdbcType=VARCHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      begin_day = #{record.beginDay,jdbcType=VARCHAR},
+      begin_month = #{record.beginMonth,jdbcType=VARCHAR},
+      begin_year = #{record.beginYear,jdbcType=VARCHAR},
+      borrow_term_unit = #{record.borrowTermUnit,jdbcType=VARCHAR},
+      borrow_terms = #{record.borrowTerms,jdbcType=VARCHAR},
+      borrow_uri = #{record.borrowUri,jdbcType=VARCHAR},
+      borrower_name = #{record.borrowerName,jdbcType=VARCHAR},
+      contract_date = #{record.contractDate,jdbcType=VARCHAR},
+      contract_money = #{record.contractMoney,jdbcType=VARCHAR},
+      contract_no = #{record.contractNo,jdbcType=VARCHAR},
+      debt_notice_uri = #{record.debtNoticeUri,jdbcType=VARCHAR},
+      end_day = #{record.endDay,jdbcType=VARCHAR},
+      end_month = #{record.endMonth,jdbcType=VARCHAR},
+      end_year = #{record.endYear,jdbcType=VARCHAR},
+      field1 = #{record.field1,jdbcType=VARCHAR},
+      field10 = #{record.field10,jdbcType=VARCHAR},
+      field11 = #{record.field11,jdbcType=VARCHAR},
+      field12 = #{record.field12,jdbcType=VARCHAR},
+      field13 = #{record.field13,jdbcType=VARCHAR},
+      field14 = #{record.field14,jdbcType=VARCHAR},
+      field15 = #{record.field15,jdbcType=VARCHAR},
+      field16 = #{record.field16,jdbcType=VARCHAR},
+      field17 = #{record.field17,jdbcType=VARCHAR},
+      field19 = #{record.field19,jdbcType=VARCHAR},
+      field2 = #{record.field2,jdbcType=VARCHAR},
+      field20 = #{record.field20,jdbcType=VARCHAR},
+      field23 = #{record.field23,jdbcType=VARCHAR},
+      field24 = #{record.field24,jdbcType=VARCHAR},
+      field26 = #{record.field26,jdbcType=VARCHAR},
+      field27 = #{record.field27,jdbcType=VARCHAR},
+      field28 = #{record.field28,jdbcType=VARCHAR},
+      field29 = #{record.field29,jdbcType=VARCHAR},
+      field3 = #{record.field3,jdbcType=VARCHAR},
+      field30 = #{record.field30,jdbcType=VARCHAR},
+      field31 = #{record.field31,jdbcType=VARCHAR},
+      field32 = #{record.field32,jdbcType=VARCHAR},
+      field33 = #{record.field33,jdbcType=VARCHAR},
+      field34 = #{record.field34,jdbcType=VARCHAR},
+      field35 = #{record.field35,jdbcType=VARCHAR},
+      field36 = #{record.field36,jdbcType=VARCHAR},
+      field4 = #{record.field4,jdbcType=VARCHAR},
+      field5 = #{record.field5,jdbcType=VARCHAR},
+      field6 = #{record.field6,jdbcType=VARCHAR},
+      field7 = #{record.field7,jdbcType=VARCHAR},
+      field8 = #{record.field8,jdbcType=VARCHAR},
+      field9 = #{record.field9,jdbcType=VARCHAR},
+      id_card_type = #{record.idCardType,jdbcType=VARCHAR},
+      id_no_uri = #{record.idNoUri,jdbcType=VARCHAR},
+      idno = #{record.idno,jdbcType=VARCHAR},
+      job_status = #{record.jobStatus,jdbcType=VARCHAR},
+      job_step = #{record.jobStep,jdbcType=INTEGER},
+      loan_uri = #{record.loanUri,jdbcType=VARCHAR},
+      mobiles = #{record.mobiles,jdbcType=VARCHAR},
+      overdue_date = #{record.overdueDate,jdbcType=VARCHAR},
+      overdue_date_unit = #{record.overdueDateUnit,jdbcType=VARCHAR},
+      overdue_dates = #{record.overdueDates,jdbcType=VARCHAR},
+      payment_date = #{record.paymentDate,jdbcType=VARCHAR},
+      permanent_address = #{record.permanentAddress,jdbcType=VARCHAR},
+      product_code = #{record.productCode,jdbcType=VARCHAR},
+      service_uri = #{record.serviceUri,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=VARCHAR},
+      swap_debt_uri = #{record.swapDebtUri,jdbcType=VARCHAR},
+      total_periods = #{record.totalPeriods,jdbcType=VARCHAR},
+      task_id = #{record.taskId,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      contacts = #{record.contacts,jdbcType=VARCHAR},
+      emails = #{record.emails,jdbcType=VARCHAR},
+      identity_no = #{record.identityNo,jdbcType=VARCHAR},
+      identity_type = #{record.identityType,jdbcType=VARCHAR},
+      legal_represent = #{record.legalRepresent,jdbcType=VARCHAR},
+      post = #{record.post,jdbcType=VARCHAR},
+      id_card_pdf_uri = #{record.idCardPdfUri,jdbcType=VARCHAR},
+      number = #{record.number,jdbcType=VARCHAR},
+      repay_num = #{record.repayNum,jdbcType=VARCHAR},
+      field37 = #{record.field37,jdbcType=VARCHAR},
+      loan_money = #{record.loanMoney,jdbcType=VARCHAR},
+      msg = #{record.msg,jdbcType=VARCHAR},
+      notice_date = #{record.noticeDate,jdbcType=VARCHAR},
+      apply_no = #{record.applyNo,jdbcType=VARCHAR},
+      sended = #{record.sended,jdbcType=VARCHAR},
+      existence = #{record.existence,jdbcType=VARCHAR},
+      sended2 = #{record.sended2,jdbcType=TINYINT},
+      arbitration_msg_url = #{record.arbitrationMsgUrl,jdbcType=VARCHAR},
+      arbitration_send_date = #{record.arbitrationSendDate,jdbcType=DATE},
+      debtmsg_send_date = #{record.debtmsgSendDate,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="arbitration.ArbitrationJobWithBLOBs" >
+    update arbitration_job
+    <set >
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="beginDay != null" >
+        begin_day = #{beginDay,jdbcType=VARCHAR},
+      </if>
+      <if test="beginMonth != null" >
+        begin_month = #{beginMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="beginYear != null" >
+        begin_year = #{beginYear,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowTermUnit != null" >
+        borrow_term_unit = #{borrowTermUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowTerms != null" >
+        borrow_terms = #{borrowTerms,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowUri != null" >
+        borrow_uri = #{borrowUri,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerName != null" >
+        borrower_name = #{borrowerName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractDate != null" >
+        contract_date = #{contractDate,jdbcType=VARCHAR},
+      </if>
+      <if test="contractMoney != null" >
+        contract_money = #{contractMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="contractNo != null" >
+        contract_no = #{contractNo,jdbcType=VARCHAR},
+      </if>
+      <if test="debtNoticeUri != null" >
+        debt_notice_uri = #{debtNoticeUri,jdbcType=VARCHAR},
+      </if>
+      <if test="endDay != null" >
+        end_day = #{endDay,jdbcType=VARCHAR},
+      </if>
+      <if test="endMonth != null" >
+        end_month = #{endMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="endYear != null" >
+        end_year = #{endYear,jdbcType=VARCHAR},
+      </if>
+      <if test="field1 != null" >
+        field1 = #{field1,jdbcType=VARCHAR},
+      </if>
+      <if test="field10 != null" >
+        field10 = #{field10,jdbcType=VARCHAR},
+      </if>
+      <if test="field11 != null" >
+        field11 = #{field11,jdbcType=VARCHAR},
+      </if>
+      <if test="field12 != null" >
+        field12 = #{field12,jdbcType=VARCHAR},
+      </if>
+      <if test="field13 != null" >
+        field13 = #{field13,jdbcType=VARCHAR},
+      </if>
+      <if test="field14 != null" >
+        field14 = #{field14,jdbcType=VARCHAR},
+      </if>
+      <if test="field15 != null" >
+        field15 = #{field15,jdbcType=VARCHAR},
+      </if>
+      <if test="field16 != null" >
+        field16 = #{field16,jdbcType=VARCHAR},
+      </if>
+      <if test="field17 != null" >
+        field17 = #{field17,jdbcType=VARCHAR},
+      </if>
+      <if test="field19 != null" >
+        field19 = #{field19,jdbcType=VARCHAR},
+      </if>
+      <if test="field2 != null" >
+        field2 = #{field2,jdbcType=VARCHAR},
+      </if>
+      <if test="field20 != null" >
+        field20 = #{field20,jdbcType=VARCHAR},
+      </if>
+      <if test="field23 != null" >
+        field23 = #{field23,jdbcType=VARCHAR},
+      </if>
+      <if test="field24 != null" >
+        field24 = #{field24,jdbcType=VARCHAR},
+      </if>
+      <if test="field26 != null" >
+        field26 = #{field26,jdbcType=VARCHAR},
+      </if>
+      <if test="field27 != null" >
+        field27 = #{field27,jdbcType=VARCHAR},
+      </if>
+      <if test="field28 != null" >
+        field28 = #{field28,jdbcType=VARCHAR},
+      </if>
+      <if test="field29 != null" >
+        field29 = #{field29,jdbcType=VARCHAR},
+      </if>
+      <if test="field3 != null" >
+        field3 = #{field3,jdbcType=VARCHAR},
+      </if>
+      <if test="field30 != null" >
+        field30 = #{field30,jdbcType=VARCHAR},
+      </if>
+      <if test="field31 != null" >
+        field31 = #{field31,jdbcType=VARCHAR},
+      </if>
+      <if test="field32 != null" >
+        field32 = #{field32,jdbcType=VARCHAR},
+      </if>
+      <if test="field33 != null" >
+        field33 = #{field33,jdbcType=VARCHAR},
+      </if>
+      <if test="field34 != null" >
+        field34 = #{field34,jdbcType=VARCHAR},
+      </if>
+      <if test="field35 != null" >
+        field35 = #{field35,jdbcType=VARCHAR},
+      </if>
+      <if test="field36 != null" >
+        field36 = #{field36,jdbcType=VARCHAR},
+      </if>
+      <if test="field4 != null" >
+        field4 = #{field4,jdbcType=VARCHAR},
+      </if>
+      <if test="field5 != null" >
+        field5 = #{field5,jdbcType=VARCHAR},
+      </if>
+      <if test="field6 != null" >
+        field6 = #{field6,jdbcType=VARCHAR},
+      </if>
+      <if test="field7 != null" >
+        field7 = #{field7,jdbcType=VARCHAR},
+      </if>
+      <if test="field8 != null" >
+        field8 = #{field8,jdbcType=VARCHAR},
+      </if>
+      <if test="field9 != null" >
+        field9 = #{field9,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardType != null" >
+        id_card_type = #{idCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="idNoUri != null" >
+        id_no_uri = #{idNoUri,jdbcType=VARCHAR},
+      </if>
+      <if test="idno != null" >
+        idno = #{idno,jdbcType=VARCHAR},
+      </if>
+      <if test="jobStatus != null" >
+        job_status = #{jobStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="jobStep != null" >
+        job_step = #{jobStep,jdbcType=INTEGER},
+      </if>
+      <if test="loanUri != null" >
+        loan_uri = #{loanUri,jdbcType=VARCHAR},
+      </if>
+      <if test="mobiles != null" >
+        mobiles = #{mobiles,jdbcType=VARCHAR},
+      </if>
+      <if test="overdueDate != null" >
+        overdue_date = #{overdueDate,jdbcType=VARCHAR},
+      </if>
+      <if test="overdueDateUnit != null" >
+        overdue_date_unit = #{overdueDateUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="overdueDates != null" >
+        overdue_dates = #{overdueDates,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentDate != null" >
+        payment_date = #{paymentDate,jdbcType=VARCHAR},
+      </if>
+      <if test="permanentAddress != null" >
+        permanent_address = #{permanentAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        product_code = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceUri != null" >
+        service_uri = #{serviceUri,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="swapDebtUri != null" >
+        swap_debt_uri = #{swapDebtUri,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPeriods != null" >
+        total_periods = #{totalPeriods,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null" >
+        task_id = #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts != null" >
+        contacts = #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="emails != null" >
+        emails = #{emails,jdbcType=VARCHAR},
+      </if>
+      <if test="identityNo != null" >
+        identity_no = #{identityNo,jdbcType=VARCHAR},
+      </if>
+      <if test="identityType != null" >
+        identity_type = #{identityType,jdbcType=VARCHAR},
+      </if>
+      <if test="legalRepresent != null" >
+        legal_represent = #{legalRepresent,jdbcType=VARCHAR},
+      </if>
+      <if test="post != null" >
+        post = #{post,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardPdfUri != null" >
+        id_card_pdf_uri = #{idCardPdfUri,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="repayNum != null" >
+        repay_num = #{repayNum,jdbcType=VARCHAR},
+      </if>
+      <if test="field37 != null" >
+        field37 = #{field37,jdbcType=VARCHAR},
+      </if>
+      <if test="loanMoney != null" >
+        loan_money = #{loanMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="msg != null" >
+        msg = #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeDate != null" >
+        notice_date = #{noticeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="applyNo != null" >
+        apply_no = #{applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sended != null" >
+        sended = #{sended,jdbcType=VARCHAR},
+      </if>
+      <if test="existence != null" >
+        existence = #{existence,jdbcType=VARCHAR},
+      </if>
+      <if test="sended2 != null" >
+        sended2 = #{sended2,jdbcType=TINYINT},
+      </if>
+      <if test="arbitrationMsgUrl != null" >
+        arbitration_msg_url = #{arbitrationMsgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="arbitrationSendDate != null" >
+        arbitration_send_date = #{arbitrationSendDate,jdbcType=DATE},
+      </if>
+      <if test="debtmsgSendDate != null" >
+        debtmsg_send_date = #{debtmsgSendDate,jdbcType=DATE},
+      </if>
+      <if test="field18 != null" >
+        field18 = #{field18,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="field21 != null" >
+        field21 = #{field21,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="field22 != null" >
+        field22 = #{field22,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="field25 != null" >
+        field25 = #{field25,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="investsCode != null" >
+        invests_code = #{investsCode,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="investsMoney != null" >
+        invests_money = #{investsMoney,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="arbitrationMsg != null" >
+        arbitration_msg = #{arbitrationMsg,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="arbitration.ArbitrationJobWithBLOBs" >
+    update arbitration_job
+    set create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      begin_day = #{beginDay,jdbcType=VARCHAR},
+      begin_month = #{beginMonth,jdbcType=VARCHAR},
+      begin_year = #{beginYear,jdbcType=VARCHAR},
+      borrow_term_unit = #{borrowTermUnit,jdbcType=VARCHAR},
+      borrow_terms = #{borrowTerms,jdbcType=VARCHAR},
+      borrow_uri = #{borrowUri,jdbcType=VARCHAR},
+      borrower_name = #{borrowerName,jdbcType=VARCHAR},
+      contract_date = #{contractDate,jdbcType=VARCHAR},
+      contract_money = #{contractMoney,jdbcType=VARCHAR},
+      contract_no = #{contractNo,jdbcType=VARCHAR},
+      debt_notice_uri = #{debtNoticeUri,jdbcType=VARCHAR},
+      end_day = #{endDay,jdbcType=VARCHAR},
+      end_month = #{endMonth,jdbcType=VARCHAR},
+      end_year = #{endYear,jdbcType=VARCHAR},
+      field1 = #{field1,jdbcType=VARCHAR},
+      field10 = #{field10,jdbcType=VARCHAR},
+      field11 = #{field11,jdbcType=VARCHAR},
+      field12 = #{field12,jdbcType=VARCHAR},
+      field13 = #{field13,jdbcType=VARCHAR},
+      field14 = #{field14,jdbcType=VARCHAR},
+      field15 = #{field15,jdbcType=VARCHAR},
+      field16 = #{field16,jdbcType=VARCHAR},
+      field17 = #{field17,jdbcType=VARCHAR},
+      field19 = #{field19,jdbcType=VARCHAR},
+      field2 = #{field2,jdbcType=VARCHAR},
+      field20 = #{field20,jdbcType=VARCHAR},
+      field23 = #{field23,jdbcType=VARCHAR},
+      field24 = #{field24,jdbcType=VARCHAR},
+      field26 = #{field26,jdbcType=VARCHAR},
+      field27 = #{field27,jdbcType=VARCHAR},
+      field28 = #{field28,jdbcType=VARCHAR},
+      field29 = #{field29,jdbcType=VARCHAR},
+      field3 = #{field3,jdbcType=VARCHAR},
+      field30 = #{field30,jdbcType=VARCHAR},
+      field31 = #{field31,jdbcType=VARCHAR},
+      field32 = #{field32,jdbcType=VARCHAR},
+      field33 = #{field33,jdbcType=VARCHAR},
+      field34 = #{field34,jdbcType=VARCHAR},
+      field35 = #{field35,jdbcType=VARCHAR},
+      field36 = #{field36,jdbcType=VARCHAR},
+      field4 = #{field4,jdbcType=VARCHAR},
+      field5 = #{field5,jdbcType=VARCHAR},
+      field6 = #{field6,jdbcType=VARCHAR},
+      field7 = #{field7,jdbcType=VARCHAR},
+      field8 = #{field8,jdbcType=VARCHAR},
+      field9 = #{field9,jdbcType=VARCHAR},
+      id_card_type = #{idCardType,jdbcType=VARCHAR},
+      id_no_uri = #{idNoUri,jdbcType=VARCHAR},
+      idno = #{idno,jdbcType=VARCHAR},
+      job_status = #{jobStatus,jdbcType=VARCHAR},
+      job_step = #{jobStep,jdbcType=INTEGER},
+      loan_uri = #{loanUri,jdbcType=VARCHAR},
+      mobiles = #{mobiles,jdbcType=VARCHAR},
+      overdue_date = #{overdueDate,jdbcType=VARCHAR},
+      overdue_date_unit = #{overdueDateUnit,jdbcType=VARCHAR},
+      overdue_dates = #{overdueDates,jdbcType=VARCHAR},
+      payment_date = #{paymentDate,jdbcType=VARCHAR},
+      permanent_address = #{permanentAddress,jdbcType=VARCHAR},
+      product_code = #{productCode,jdbcType=VARCHAR},
+      service_uri = #{serviceUri,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      swap_debt_uri = #{swapDebtUri,jdbcType=VARCHAR},
+      total_periods = #{totalPeriods,jdbcType=VARCHAR},
+      task_id = #{taskId,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      contacts = #{contacts,jdbcType=VARCHAR},
+      emails = #{emails,jdbcType=VARCHAR},
+      identity_no = #{identityNo,jdbcType=VARCHAR},
+      identity_type = #{identityType,jdbcType=VARCHAR},
+      legal_represent = #{legalRepresent,jdbcType=VARCHAR},
+      post = #{post,jdbcType=VARCHAR},
+      id_card_pdf_uri = #{idCardPdfUri,jdbcType=VARCHAR},
+      number = #{number,jdbcType=VARCHAR},
+      repay_num = #{repayNum,jdbcType=VARCHAR},
+      field37 = #{field37,jdbcType=VARCHAR},
+      loan_money = #{loanMoney,jdbcType=VARCHAR},
+      msg = #{msg,jdbcType=VARCHAR},
+      notice_date = #{noticeDate,jdbcType=VARCHAR},
+      apply_no = #{applyNo,jdbcType=VARCHAR},
+      sended = #{sended,jdbcType=VARCHAR},
+      existence = #{existence,jdbcType=VARCHAR},
+      sended2 = #{sended2,jdbcType=TINYINT},
+      arbitration_msg_url = #{arbitrationMsgUrl,jdbcType=VARCHAR},
+      arbitration_send_date = #{arbitrationSendDate,jdbcType=DATE},
+      debtmsg_send_date = #{debtmsgSendDate,jdbcType=DATE},
+      field18 = #{field18,jdbcType=LONGVARCHAR},
+      field21 = #{field21,jdbcType=LONGVARCHAR},
+      field22 = #{field22,jdbcType=LONGVARCHAR},
+      field25 = #{field25,jdbcType=LONGVARCHAR},
+      invests_code = #{investsCode,jdbcType=LONGVARCHAR},
+      invests_money = #{investsMoney,jdbcType=LONGVARCHAR},
+      arbitration_msg = #{arbitrationMsg,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="arbitration.ArbitrationJob" >
+    update arbitration_job
+    set create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      begin_day = #{beginDay,jdbcType=VARCHAR},
+      begin_month = #{beginMonth,jdbcType=VARCHAR},
+      begin_year = #{beginYear,jdbcType=VARCHAR},
+      borrow_term_unit = #{borrowTermUnit,jdbcType=VARCHAR},
+      borrow_terms = #{borrowTerms,jdbcType=VARCHAR},
+      borrow_uri = #{borrowUri,jdbcType=VARCHAR},
+      borrower_name = #{borrowerName,jdbcType=VARCHAR},
+      contract_date = #{contractDate,jdbcType=VARCHAR},
+      contract_money = #{contractMoney,jdbcType=VARCHAR},
+      contract_no = #{contractNo,jdbcType=VARCHAR},
+      debt_notice_uri = #{debtNoticeUri,jdbcType=VARCHAR},
+      end_day = #{endDay,jdbcType=VARCHAR},
+      end_month = #{endMonth,jdbcType=VARCHAR},
+      end_year = #{endYear,jdbcType=VARCHAR},
+      field1 = #{field1,jdbcType=VARCHAR},
+      field10 = #{field10,jdbcType=VARCHAR},
+      field11 = #{field11,jdbcType=VARCHAR},
+      field12 = #{field12,jdbcType=VARCHAR},
+      field13 = #{field13,jdbcType=VARCHAR},
+      field14 = #{field14,jdbcType=VARCHAR},
+      field15 = #{field15,jdbcType=VARCHAR},
+      field16 = #{field16,jdbcType=VARCHAR},
+      field17 = #{field17,jdbcType=VARCHAR},
+      field19 = #{field19,jdbcType=VARCHAR},
+      field2 = #{field2,jdbcType=VARCHAR},
+      field20 = #{field20,jdbcType=VARCHAR},
+      field23 = #{field23,jdbcType=VARCHAR},
+      field24 = #{field24,jdbcType=VARCHAR},
+      field26 = #{field26,jdbcType=VARCHAR},
+      field27 = #{field27,jdbcType=VARCHAR},
+      field28 = #{field28,jdbcType=VARCHAR},
+      field29 = #{field29,jdbcType=VARCHAR},
+      field3 = #{field3,jdbcType=VARCHAR},
+      field30 = #{field30,jdbcType=VARCHAR},
+      field31 = #{field31,jdbcType=VARCHAR},
+      field32 = #{field32,jdbcType=VARCHAR},
+      field33 = #{field33,jdbcType=VARCHAR},
+      field34 = #{field34,jdbcType=VARCHAR},
+      field35 = #{field35,jdbcType=VARCHAR},
+      field36 = #{field36,jdbcType=VARCHAR},
+      field4 = #{field4,jdbcType=VARCHAR},
+      field5 = #{field5,jdbcType=VARCHAR},
+      field6 = #{field6,jdbcType=VARCHAR},
+      field7 = #{field7,jdbcType=VARCHAR},
+      field8 = #{field8,jdbcType=VARCHAR},
+      field9 = #{field9,jdbcType=VARCHAR},
+      id_card_type = #{idCardType,jdbcType=VARCHAR},
+      id_no_uri = #{idNoUri,jdbcType=VARCHAR},
+      idno = #{idno,jdbcType=VARCHAR},
+      job_status = #{jobStatus,jdbcType=VARCHAR},
+      job_step = #{jobStep,jdbcType=INTEGER},
+      loan_uri = #{loanUri,jdbcType=VARCHAR},
+      mobiles = #{mobiles,jdbcType=VARCHAR},
+      overdue_date = #{overdueDate,jdbcType=VARCHAR},
+      overdue_date_unit = #{overdueDateUnit,jdbcType=VARCHAR},
+      overdue_dates = #{overdueDates,jdbcType=VARCHAR},
+      payment_date = #{paymentDate,jdbcType=VARCHAR},
+      permanent_address = #{permanentAddress,jdbcType=VARCHAR},
+      product_code = #{productCode,jdbcType=VARCHAR},
+      service_uri = #{serviceUri,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      swap_debt_uri = #{swapDebtUri,jdbcType=VARCHAR},
+      total_periods = #{totalPeriods,jdbcType=VARCHAR},
+      task_id = #{taskId,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      contacts = #{contacts,jdbcType=VARCHAR},
+      emails = #{emails,jdbcType=VARCHAR},
+      identity_no = #{identityNo,jdbcType=VARCHAR},
+      identity_type = #{identityType,jdbcType=VARCHAR},
+      legal_represent = #{legalRepresent,jdbcType=VARCHAR},
+      post = #{post,jdbcType=VARCHAR},
+      id_card_pdf_uri = #{idCardPdfUri,jdbcType=VARCHAR},
+      number = #{number,jdbcType=VARCHAR},
+      repay_num = #{repayNum,jdbcType=VARCHAR},
+      field37 = #{field37,jdbcType=VARCHAR},
+      loan_money = #{loanMoney,jdbcType=VARCHAR},
+      msg = #{msg,jdbcType=VARCHAR},
+      notice_date = #{noticeDate,jdbcType=VARCHAR},
+      apply_no = #{applyNo,jdbcType=VARCHAR},
+      sended = #{sended,jdbcType=VARCHAR},
+      existence = #{existence,jdbcType=VARCHAR},
+      sended2 = #{sended2,jdbcType=TINYINT},
+      arbitration_msg_url = #{arbitrationMsgUrl,jdbcType=VARCHAR},
+      arbitration_send_date = #{arbitrationSendDate,jdbcType=DATE},
+      debtmsg_send_date = #{debtmsgSendDate,jdbcType=DATE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
